@@ -1,0 +1,58 @@
+<!--{% extends 'rango/base.html' %}-->
+{% load staticfiles %}
+
+<!--For index.html-->
+link rel="stylesheet" href="css/style.css">
+<!-- Header for about page-->
+<header>
+    <!--Navigation bar-->
+    <div id="top header">
+        <!--logo-->
+        <div id="logo">
+            <img src="images/logo.png" />
+        </div>
+        <!--Navigation menu-->
+        <nav>
+            <ul>
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Homepage</a></li>
+                <li><a href="#">Search</a></li>
+                <li><a href="#">Contact us</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="header-image-menu">
+        <img src="images/slider.jpg">
+        <h2 id="image-text">
+            Online Music Matching Interest Site
+        </h2>
+        
+    </div>
+</header>
+
+
+{% block title_block %}
+    About Page!
+{% endblock %}
+
+{% block body_block %}
+<h1>About</h1>
+<div>
+    Do you find yourself listening to the same songs over and over again?. <br />
+    Are you getting bored? This website is here to help! <br />
+
+    Our aim is to help people find others with similar musical interests, so <br />
+    they can continuously be inspired to keep discovering new artists. <br />
+
+    We also encourage users to blog and shar their opinion on concerts they've beeen to, new album releases, <br/>
+    and be able to discuss and debate msuic tastes in a lively community. <br />
+
+    We hope you enjoy! <br />
+
+</div>
+<!--insert new image here for music-->
+<!--<img src="{% static 'images/music.jpg' %}" alt="Music" />
+<img src="{{ MEDIA_URL }}cat.jpg" alt="Picture of a Cat" />-->
+{% endblock %}

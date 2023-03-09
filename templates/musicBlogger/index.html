@@ -1,0 +1,55 @@
+<!--{% extends '-----/base.html' %} ?-->
+<!DOCTYPE html>
+{% load staticfiles %}
+<head>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<!--For linking style.css to index -->
+
+<!-- Header for about page-->
+<header>
+    <!--Navigation bar-->
+    <div id="top header">
+        <!--logo image-->
+        <div id="logo">
+            <img src="images/logo.png" />
+        </div>
+        <!--Navigation menu-->
+        <nav>
+            <ul>
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Search</a></li>
+                <li><a href="#">Contact us</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="header-image-menu">
+        <img src="images/slider.jpg">
+        <h2 id="image-text">
+            Online Music Matching Interest Site
+        </h2>
+        
+    </div>
+</header>
+
+{% block title_block %}
+    Welcome!
+{% endblock %}
+
+{% block body_block %}
+<h1>About</h1>
+<div>
+    Trending <br />
+    <!--insert the trending tags-->
+   
+    People you may know <br />
+    <!--insert the people similar to them-->
+
+</div>
+<!--insert new image here for music-->
+<!--<img src="{% static 'images/music.jpg' %}" alt="Music" />
+{% endblock %}
