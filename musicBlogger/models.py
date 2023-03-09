@@ -15,7 +15,7 @@ class UserProfile(models.Model):
     picture = models.ImageField(upload_to='profile_images', blank=True)
     artist = models.BooleanField()
     review = models.BooleanField()
-    artsIndusry = models.BooleanField()
+    artsIndustry = models.BooleanField()
     likedSong = models.ManyToManyField(Songs)
     follows = models.ManyToManyField('self')
     def __str__(self):
