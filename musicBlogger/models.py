@@ -13,6 +13,7 @@ class Songs (models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     picture = models.ImageField(upload_to='profile_images', blank=True)
+    email = models.EmailField(max_length=128, null=False)
     artist = models.BooleanField()
     review = models.BooleanField()
     artsIndustry = models.BooleanField()
