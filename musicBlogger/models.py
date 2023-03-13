@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 
 
 class Artist(models.Model):
-    madeSongs = models.ManyToManyField(Songs)
     artistName = models.CharField(max_length=128)
 
 class Songs (models.Model):
