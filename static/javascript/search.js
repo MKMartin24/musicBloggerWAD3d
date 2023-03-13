@@ -2,16 +2,18 @@ function search() {
     var query = document.getElementById('search-input').value;
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var data = JSON.parse(xhr.responseText);
-            showResults(data.results);
-        }
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        var data = JSON.parse(xhr.responseText);
+        showResults(data.results_songs, "songs"); 
+        showResults(data.results_profiles, "profiles");
+        showResults(data.results_blogs, "blogs");
+      }
     };
     xhr.open('GET', '/search?q=' + query);
     xhr.send();
-}
+  }
 
-function showResults(results) {
+function showResults(results, type) {
     var output = '';
     if (results.length > 0) {
         output += '<ul>';
