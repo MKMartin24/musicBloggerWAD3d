@@ -2,25 +2,30 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class Artist(models.Model):
+    madeSongs = models.ManyToManyField(Songs)
+    artistName = models.CharField(max_length=128)
+
 class Songs (models.Model):
     name = models.CharField(max_length=128, default="No-Name")
+    bio = models.CharField(max_length=1000)
     spotifyURL = models.CharField(max_length=128)
     youtubeURL = models.CharField(max_length=128)
     description = models.CharField(max_length=512)
     coverArt = models.ImageField(upload_to='cover_images')
     genre = models.CharField(max_length=128)
+    madeBy = models.ForeignKey(Artist, on_delete = models.CASCADE)
 
+    
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.CharField(max_length=1000)
     picture = models.ImageField(upload_to='profile_images', blank=True)
-    artist = models.BooleanField()
-    review = models.BooleanField()
-    artsIndustry = models.BooleanField()
     likedSong = models.ManyToManyField(Songs)
+    artist = models.ManyToManyField(Artist)
     follows = models.ManyToManyField('self')
     def __str__(self):
         return self.user.username
-    
 
 
 class Blogs(models.Model):
