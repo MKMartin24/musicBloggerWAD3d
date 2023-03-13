@@ -11,7 +11,7 @@ class Songs (models.Model):
     spotifyURL = models.CharField(max_length=128)
     youtubeURL = models.CharField(max_length=128)
     description = models.CharField(max_length=512)
-    coverArt = models.ImageField(upload_to='cover_images')
+    image = models.ImageField(upload_to='cover_images')
     genre = models.CharField(max_length=128)
     madeBy = models.ForeignKey(Artist, on_delete = models.CASCADE)
 
@@ -19,11 +19,7 @@ class Songs (models.Model):
 class UserProfile(models.Model):
     name = models.OneToOneField(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=1000)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
-    email = models.EmailField(max_length=128, null=False)
-    artist = models.BooleanField()
-    review = models.BooleanField()
-    artsIndustry = models.BooleanField()
+    image = models.ImageField(upload_to='profile_images', blank=True)
     likedSong = models.ManyToManyField(Songs)
     artist = models.ManyToManyField(Artist)
     follows = models.ManyToManyField('self')
