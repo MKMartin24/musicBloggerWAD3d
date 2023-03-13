@@ -4,9 +4,9 @@ function search() {
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4 && xhr.status === 200) {
         var data = JSON.parse(xhr.responseText);
-        showResults(data.results_songs, "songs"); 
-        showResults(data.results_profiles, "profiles");
-        showResults(data.results_blogs, "blogs");
+        showResults(data.results_songs, "cover_images"); 
+        showResults(data.results_profiles, "profile_images");
+        showResults(data.results_blogs, "blog_images");
       }
     };
     xhr.open('GET', '/search?q=' + query);
@@ -16,13 +16,19 @@ function search() {
 function showResults(results, type) {
     var output = '';
     if (results.length > 0) {
-        output += '<ul>';
+        output += '<div>';
         for (var i = 0; i < results.length; i++) {
-            output += '<li>' + results[i].field1 + ' - ' + results[i].field2 + '</li>';
+          template(name, type+"/"+image, text);
         }
-        output += '</ul>';
+        output += '</div>';
     } else {
         output += 'No results found.';
     }
-    document.getElementById('search-results').innerHTML = output;
+    document.getElementById('type').innerHTML = output;
+}
+function template(name, image, text) {
+    return '<div class = "profile"><h3>' + name + 
+    '</h3> <img src="' +
+    image + '"><p>' +
+    text + '</p></div>';
 }

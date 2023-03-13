@@ -7,7 +7,7 @@ class Artist(models.Model):
 
 class Songs (models.Model):
     name = models.CharField(max_length=128, default="No-Name")
-    bio = models.CharField(max_length=1000)
+    text = models.CharField(max_length=1000)
     spotifyURL = models.CharField(max_length=128)
     youtubeURL = models.CharField(max_length=128)
     description = models.CharField(max_length=512)
@@ -17,8 +17,8 @@ class Songs (models.Model):
 
     
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.CharField(max_length=1000)
+    name = models.OneToOneField(User, on_delete=models.CASCADE)
+    text = models.CharField(max_length=1000)
     picture = models.ImageField(upload_to='profile_images', blank=True)
     email = models.EmailField(max_length=128, null=False)
     artist = models.BooleanField()
@@ -32,7 +32,7 @@ class UserProfile(models.Model):
 
 
 class Blogs(models.Model):
-    title = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
     date = models.DateField()
     image = models.ImageField(upload_to='blog_images', blank=True)
     text = models.CharField(max_length=4096)
