@@ -15,7 +15,7 @@
         
         <div>
             {% block header %}
-                <img src="{% static 'images/musicBloggerLogo.png' %}" alt="Logo" />
+                <a href="{% url 'musicBlogger:index'}"><img src="{% static 'images/musicBloggerLogo.png' %}" alt="Logo" /></a>
                 <a href="{%url 'musicBlogger:search '}">Search</a>
                 <a href="{%url 'musicBlogger:about '}">About</a>
                 <a href="{%url 'musicBlogger:contact_us '}">Contact Us</a>
