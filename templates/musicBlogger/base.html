@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-{% load staticfiles%}
-{% load musicBlogger_template_tags %}
+{% load staticfiles %}
+{% comment %} {% load musicBlogger_template_tags %} {% endcomment %}
 
 <html>
     <head lang = "en">
@@ -15,7 +15,7 @@
         
         <div>
             {% block header %}
-                <img src="{% static images/musicBloggerLogo %}" alt="Logo" />
+                <img src="{% static 'images/musicBloggerLogo.png' %}" alt="Logo" />
                 <a href="{%url 'musicBlogger:search '}">Search</a>
                 <a href="{%url 'musicBlogger:about '}">About</a>
                 <a href="{%url 'musicBlogger:contact_us '}">Contact Us</a>
