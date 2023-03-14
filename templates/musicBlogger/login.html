@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8" name = "viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-items">
+            <p2 class="page-title">Login</p2>
+            <form class="form-style">
+                <input placeholder="Email address or phone number" type="text" class="login-input-style" name="email">
+                <input placeholder="Password" type="password" class="login-input-style" name="password">
+            </form>
+            <button class="button-style">Login</button>
+            <div class="signin-text-container">
+                <h5 class="small-text">Don’t have an  account yet?</h5>
+                <a class="link-style" href="/new_page.html">Sign up</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,55 +1,31 @@
-<!--{% extends '-----/base.html' %} ?-->
 <!DOCTYPE html>
+{% extends 'musicBlogger/base.html' %}
 {% load staticfiles %}
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Homepage</title>
+    <meta charset="utf-8" name = "viewport" content ="width=device-width, initial-scale=1.0" /> "
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<!--For linking style.css to index -->
-
-<!-- Header for about page-->
-<header>
-    <!--Navigation bar-->
-    <div id="top header">
-        <!--logo image-->
-        <div id="logo">
-            <img src="images/logo.png" />
+<body>
+    <!-- Header for about page-->
+    <main>
+        <h5 class="small-text">Artists you may like</h5>
+        <div class="profile-container">
+            <div class="profile-items">
+                <div class="profile-info">
+                    <div class="profile-title">
+                        <img class="profile-img-style" src="{% static 'img/profile-img.jpg' %}">
+                        <div class="profile-text">
+                            <h2 class="name-text">Lana Del Rey</h2>
+                            <h3 class="location-text">New York, USA</h3>
+                        </div>
+                    </div>
+                </div>
         </div>
-        <!--Navigation menu-->
-        <nav>
-            <ul>
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Search</a></li>
-                <li><a href="#">Contact us</a></li>
-                <li><a href="#">Login</a></li>
-            </ul>
-        </nav>
-    </div>
-
-    <div id="header-image-menu">
-        <img src="images/slider.jpg">
-        <h2 id="image-text">
-            Online Music Matching Interest Site
-        </h2>
-        
-    </div>
-</header>
-
-{% block title_block %}
-    Welcome!
-{% endblock %}
-
-{% block body_block %}
-<h1>About</h1>
-<div>
-    Trending <br />
-    <!--insert the trending tags-->
-   
-    People you may know <br />
-    <!--insert the people similar to them-->
-
-</div>
-<!--insert new image here for music-->
-<!--<img src="{% static 'images/music.jpg' %}" alt="Music" />
-{% endblock %}
+    </main>
+    </body>
