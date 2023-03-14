@@ -18,7 +18,7 @@ def about(request):
 def styling_function(request, add_to_recent, context_dict):
 
     if(add_to_recent):
-        context_dict["page"] = "collab_app:" + resolve(request.path_info).url_name
+        context_dict["page"] = "musicBlogger:" + resolve(request.path_info).url_name
         recent = request.COOKIES.get("recent")
         if(recent):
             context_dict["recent"] = recent.split(",")
