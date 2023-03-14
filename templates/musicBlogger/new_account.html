@@ -1,0 +1,25 @@
+{% extends 'musicBlogger/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+New account
+{% endblock %}
+
+{% block body_block %}
+    <div class="login-container">
+        <div class="login-items">
+            <p2 class="page-title">New account</p2>
+            <form class="form-style">
+                <input placeholder="Username" type="text" class="login-input-style" name="username">
+                <input placeholder="Email address or phone number" type="text" class="login-input-style" name="email">
+                <input placeholder="Password" type="password" class="login-input-style" name="password">
+                <input placeholder="Confirm password" type="password" class="login-input-style" name="comfirm-password">
+            </form>
+            <button class="button-style">Create</button>
+            <div class="signin-text-container">
+                <h5 class="small-text">Have had an account already?</h5>
+                <a class="link-style" href="/login.html">Login</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

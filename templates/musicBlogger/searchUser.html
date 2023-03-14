@@ -1,0 +1,16 @@
+{% extends 'musicBlogger/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+Search users 
+{% endblock %}
+
+{% block body_block %}
+{%if userProfiles %}
+{% for profile in userProfiles %}
+{{ profile.picture }}
+{{ profile.user.username }}
+{% else %}
+Couldn't find any users
+{% endif %}
+{% endblock %}
