@@ -15,14 +15,14 @@
         
         <div>
             {% block header %}
-                <a href="{% url 'musicBlogger:index'}"><img src="{% static 'images/musicBloggerLogo.png' %}" alt="Logo" /></a>
-                <a href="{%url 'musicBlogger:search '}">Search</a>
-                <a href="{%url 'musicBlogger:about '}">About</a>
-                <a href="{%url 'musicBlogger:contact_us '}">Contact Us</a>
+                {% comment %} <a href="{% url 'musicBlogger:index '}"><img src="{% static 'images/musicBloggerLogo.png' %}" alt="Logo" /></a> {% endcomment %}
+                <a href="{% url 'musicBlogger:search' %}">Search</a>
+                <a href="{% url 'musicBlogger:about' %}">About</a>
+                <a href="{% url 'musicBlogger:contact_us' %}">Contact Us</a>
                 {% if user.is_authenticated %}
-                    <a href="{%url 'musicBlogger:login '}">Login</a>
+                    <a href="{% url 'musicBlogger:login' %}">Login</a>
                 {% else %}
-                    <a href="{%url 'musicBlogger:user_profile user.slug '}">User Profile</a>
+                    <a href="{% url 'musicBlogger:profile' %}">User Profile</a>
                 {% endif %}
             {% endblock %}
         </div>
