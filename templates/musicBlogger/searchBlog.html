@@ -11,17 +11,18 @@ Search Blogs
 <a href="{% url 'musicBlogger:category' category.slug %}">{{category.name}}</a>
 {% endfor %}
 {% else %}
-<p>Unable to find categories<p>
+<p>Unable to find categories</p>
+{% endif %}
 {% endblock %}
 
-{% body body_block %}
+{% block body_block %}
 
 {% if blogs %}
 {% for blog in blogs %}
     <img src="{{blog.image}}" alt="{{blog.title}} Picture"/>
     <p> {{ blog.title }}</p>
     <p> {{ blog.postedBy }}</p>
-{% end for %}
+{% endfor %}
 {% else %}
 <p>Unable to find any blogs</p>
 {% endif %}

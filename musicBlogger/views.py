@@ -2,7 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse, resolve
+from musicBlogger.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 # Create your views here.
 def index(request):
@@ -55,18 +58,16 @@ def login(request):
     else:
         return render(request, 'musicBlogger/login.html', context=context_dict)
 
+
+@login_required
 def logout(request):
-    context_dict = {}
-    context_dict['message'] ="This is the logout page"
-    if request.method == 'POST':
-        logout(request)
-        return redirect('musicBlogger:index')
-    #return render(request, 'musicBlogger/logout.html', context=context_dict)
+    logout(request)
+    return redirect(reverse('musicBlogger:index'))
 
 def search(request):
     context_dict = {}
     context_dict['message'] ="This is the search page"
-    return render(request, 'musicBlogger/searchBlogs.html', context=context_dict)
+    return render(request, 'musicBlogger/searchBlog.html', context=context_dict)
 
 def add_blog(request, blog_name_slug):
     context_dict = {}
@@ -88,12 +89,32 @@ def profile(request):
     context_dict['message'] ="This is the profile page"
     return render(request, 'musicBlogger/profile.html', context=context_dict)
 
-def login(request):
-    context_dict = {}
-    context_dict['message'] ="This is the login page"
-    return render(request, 'musicBlogger/login.html', context=context_dict)
+
 
 def new_account(request):
     context_dict = {}
     context_dict['message'] ="This is the new account page"
-    return render(request, 'musicBlogger/new_account.html', context=context_dict)
+    registered = False
+    if request.method == 'POST':
+        user_form = UserForm(request.POST)
+        profile_form = UserProfileForm(request.POST)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()  # Save user form data to databse
+            user.set_password(user.password)
+            user.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+            profile.save()
+            registered = True
+        else:
+            print(user_form.errors, profile_form.errors)
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+
+    context_dict = {'user_form': user_form,'profile_form': profile_form,'registered': registered}
+
+    return render(request,'musicBlogger/new_account.html',context=context_dict)

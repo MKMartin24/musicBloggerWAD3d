@@ -1,4 +1,5 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
 
@@ -23,6 +24,9 @@ class UserProfile(models.Model):
     likedSong = models.ManyToManyField(Songs)
     artist = models.ManyToManyField(Artist)
     follows = models.ManyToManyField('self')
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(UserProfile, self).save(*args, **kwargs)
     def __str__(self):
         return self.user.username
 

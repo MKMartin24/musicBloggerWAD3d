@@ -439,3 +439,16 @@ body{
     border: 0;
     padding: 0;
 }
+
+/* 
+.header-container{
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0px 4px 10px 3px rgba(102, 99, 99, 0.05);
+    border-radius: 40px;
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+    padding-bottom: 60px;
+} */

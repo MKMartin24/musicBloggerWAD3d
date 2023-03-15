@@ -8,7 +8,7 @@ Login
 {% block body_block %}
     <div class="login-container">
         <div class="login-items">
-            <p2 class="page-title">Login</p2>
+            <p class="page-title">Login</p>
             <form class="form-style">
                 <input placeholder="Email address or phone number" type="text" class="login-input-style" name="email">
                 <input placeholder="Password" type="password" class="login-input-style" name="password">
@@ -16,7 +16,7 @@ Login
             <button class="button-style">Login</button>
             <div class="signin-text-container">
                 <h5 class="small-text">Don’t have an  account yet?</h5>
-                <a class="link-style" href="#">Sign up</a>
+                <a class="link-style" href="{% url 'musicBlogger:new_account' %}">Sign up</a>
             </div>
         </div>
     </div>
