@@ -67,7 +67,7 @@ def logout(request):
 def search(request):
     context_dict = {}
     context_dict['message'] ="This is the search page"
-    return render(request, 'musicBlogger/searchBlogs.html', context=context_dict)
+    return render(request, 'musicBlogger/searchBlog.html', context=context_dict)
 
 def add_blog(request, blog_name_slug):
     context_dict = {}
@@ -115,8 +115,6 @@ def new_account(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-    return render(request,
-                  'rango/register.html',
-                  context={'user_form': user_form,
-                           'profile_form': profile_form,
-                           'registered': registered})
+    context_dict = {'user_form': user_form,'profile_form': profile_form,'registered': registered}
+
+    return render(request,'musicBlogger/new_account.html',context=context_dict)
