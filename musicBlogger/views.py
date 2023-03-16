@@ -36,7 +36,6 @@ def styling_function(request, add_to_recent, context_dict):
 
 def login(request):
     context_dict = {}
-    context_dict['message'] ="This is the login page"
     styling_function(request, True, context_dict)
 
     if request.method == 'POST':
@@ -50,7 +49,7 @@ def login(request):
                 login(request, user)
                 return redirect(reverse('musicBlogger:index'))
             else:
-                return HttpResponse("Your musicBlogger account is disabled.")
+                return HttpResponse("Your Music Blogger account is disabled.")
         else:
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
