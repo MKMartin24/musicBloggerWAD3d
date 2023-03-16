@@ -17,6 +17,9 @@ def populate():
     date = [
         {'date': 23/2/2023}
     ]
+    #image = [
+        #'userProfile1'
+    #]
     Songs_name = [
         'blinding light', 'idk', 'light'
     ]

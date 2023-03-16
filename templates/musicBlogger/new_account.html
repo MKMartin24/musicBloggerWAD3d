@@ -9,13 +9,19 @@ New account
     <div class="login-container">
         <div class="login-items">
             <p class="page-title">New account</p>
-            <form class="form-style">
+            <form class="form-style" id="user_form" method="post" action="{% url 'musicBlogger:new_account' %}"
+                  enctype="multipart/form-data">
+
+                  {%csrf_token %}
+                  <!-- Display each form -->
+                  {{ user_form.as_p }}
+                  {{ profile_form.as_p }}
                 <input placeholder="Username" type="text" class="login-input-style" name="username">
                 <input placeholder="Email address or phone number" type="text" class="login-input-style" name="email">
                 <input placeholder="Password" type="password" class="login-input-style" name="password">
-                <input placeholder="Confirm password" type="password" class="login-input-style" name="comfirm-password">
+                <input placeholder="Confirm password" type="password" class="login-input-style" name="confirm-password">
+                <input class="button-style" type="submit" value="create account">
             </form>
-            <button class="button-style">Create</button>
             <div class="signin-text-container">
                 <h5 class="small-text">Have had an account already?</h5>
                 <a class="link-style" href="{% url 'musicBlogger:login' %}">Login</a>

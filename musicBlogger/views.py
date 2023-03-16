@@ -100,13 +100,13 @@ def new_account(request):
         profile_form = UserProfileForm(request.POST)
 
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()  # Save user form data to databse
+            user = user_form.save()  # Save user form data to database
             user.set_password(user.password)
             user.save()
             profile = profile_form.save(commit=False)
             profile.user = user
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
+            if 'image' in request.FILES:
+                profile.picture = request.FILES['image']
             profile.save()
             registered = True
         else:
