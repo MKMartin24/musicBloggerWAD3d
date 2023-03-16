@@ -1,8 +1,8 @@
 import os
-os.environ.setdefault('DJANGO_SSETTINGSMODULE','musicBloggerWAD3d.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE','musicBloggerWAD3d.settings')
 
 import django
-django.setup
+django.setup()
 from musicBlogger.models import Songs, UserProfile, Blogs, Comments
 from django.contrib.auth.models import User
 
@@ -18,15 +18,13 @@ def populate():
         {'date': 23/2/2023}
     ]
     Songs_name = [
-        'song_name': 'blinding lights'
+        'blinding light', 'idk', 'light'
     ]
     Songs = [
-        {'name':Songs_name, 'text':'Best song', 'spotifyURL':'https://open.spotify.com/artist/1Xyo4u8uXC1ZmMpatF05PJ', 'youtubeURL':'https://www.youtube.com/watch?v=4NRXx6U8ABQ&ab_channel=TheWeekndVEVO', 
-         'description':'by The Weeknd','madeBy':madeBy}
+        {'name':Songs_name[i], 'text':'Best song', 'spotifyURL':'https://open.spotify.com/artist/1Xyo4u8uXC1ZmMpatF05PJ', 'youtubeURL':'https://www.youtube.com/watch?v=4NRXx6U8ABQ&ab_channel=TheWeekndVEVO', 
+        'description':'by The Weeknd','madeBy':madeBy}
     ]
-    userProfile = [
-        {'user': 'Jay345', 'text':'Normal person who love The weekend', 'likedSong':'Blindlights','artist':'Jay', 'follows':4 }
-    ]
+
 
     blogs = [ 
         {'title': blogs_title,'date': date,'text': 'No.1: Blinding lights','postedBy': madeBy}
@@ -37,15 +35,24 @@ def populate():
     ]
 
     tset_users = [ 
-        {'id':2900000, 'user_name':'Jay345', 'email' : 'jay345@gmail.com'}
-        #,{'id':3000000, 'user_name':'Issac123','email': 'issac123@gmail.com'}
-        
+        {'user_name':'Jay345', 'email' : 'jay345@gmail.com'}
+        #,{'id':3000000, 'user_name':'Issac123','email': 'issac123@gmail.com'}    
     ]
-   
+
+    userProfile = [
+        {'user': 'Jay345', 'text':'Normal person who love The weekend', 'likedSong':'Blindlights','artist':'Jay', 'follows':4 }
+    ]
+
+    a = UserProfile.objects.get()
+
+    a.likedSong.add(Songs.objects.get(name='Blindlights'))
+    a.save()
         
     for user in tset_users:
-        add_user(user['id'], user['user_name'], user['email'])
+        user_added = add_user(user['user_name'], user['email'])
+        add_user_profile()
     
+
     users = User.objects.all()
     user_list = []
     for user in users:
@@ -62,8 +69,8 @@ def populate():
 
     print("Population script finished.")
 
-def add_user_profile(user, user_id):
-    u = UserProfile.objects.get_or_create(user=user, user_id=user_id)[0]
+def add_user_profile(user, text):
+    u = UserProfile.objects.get_or_create(name=user, text=text)[0]
     u.save()
     return u
 
@@ -72,8 +79,9 @@ def add_blogs_comments(blog, comment):
         add_comment(comment, com['blog'], add_user)
 
 
-def add_user(id, user_name, email):
-    u = User.objects.get_or_create(id=id, username=user_name,email=email)[0]
+def add_user(user_name, password, email):
+    u = User.objects.get_or_create(username=user_name, email=email)[0]
+    u.set_password = password
     return u
 
 def add_blog(name, postBy):
