@@ -1,11 +1,13 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.shortcuts import redirect
+
+from datetime import datetime
+from django.shortcuts import render,redirect
 from django.urls import reverse, resolve
-from musicBlogger.forms import UserForm, UserProfileForm
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from datetime import datetime
+from musicBlogger.models import UserProfile,Artist,Songs,Blogs,Comments
+from musicBlogger.forms import UserForm, UserProfileForm
+
 
 # Create your views here.
 def index(request):
@@ -34,7 +36,7 @@ def styling_function(request, add_to_recent, context_dict):
     except: #User does not exist
         pass
 
-def login(request):
+def user_login(request):
     context_dict = {}
     styling_function(request, True, context_dict)
 
@@ -59,40 +61,34 @@ def login(request):
 
 
 @login_required
-def logout(request):
+def user_logout(request):
     logout(request)
     return redirect(reverse('musicBlogger:index'))
 
 def search(request):
     context_dict = {}
-    context_dict['message'] ="This is the search page"
     return render(request, 'musicBlogger/searchBlog.html', context=context_dict)
 
 def add_blog(request, blog_name_slug):
     context_dict = {}
-    context_dict['message'] ="This is the add blog page"
     return render(request, 'musicBlogger/add_blog.html', context=context_dict)
 
 def view_blog(request):
     context_dict = {}
-    context_dict['message'] ="This is the view blog page"
     return render(request, 'musicBlogger/viewBlog.html', context=context_dict)
 
 def contact_us(request):
     context_dict = {}
-    context_dict['message'] ="This is the contact us page"
     return render(request, 'musicBlogger/contact_us.html', context=context_dict)
 
 def profile(request):
     context_dict = {}
-    context_dict['message'] ="This is the profile page"
     return render(request, 'musicBlogger/profile.html', context=context_dict)
 
 
 
 def new_account(request):
     context_dict = {}
-    context_dict['message'] ="This is the new account page"
     registered = False
     if request.method == 'POST':
         user_form = UserForm(request.POST)
@@ -104,6 +100,7 @@ def new_account(request):
             user.save()
             profile = profile_form.save(commit=False)
             profile.user = user
+            profile.name = user
             if 'image' in request.FILES:
                 profile.picture = request.FILES['image']
             profile.save()
