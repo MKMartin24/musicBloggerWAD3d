@@ -1,11 +1,17 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse, resolve
 from musicBlogger.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import redirect
+from models import Songs, Blogs, UserProfile
+from django.http import JsonResponse
+from django.db.models import Q
+from django.core import serializers
 
 # Create your views here.
 def index(request):
@@ -55,7 +61,7 @@ def login(request):
             return HttpResponse("Invalid login details supplied.")
     
     else:
-        return render(request, 'musicBlogger/login.html')
+        return render(request, 'musicBlogger/login.html', context=context_dict)
 
 
 @login_required
@@ -83,10 +89,9 @@ def contact_us(request):
     context_dict['message'] ="This is the contact us page"
     return render(request, 'musicBlogger/contact_us.html', context=context_dict)
 
-def profile(request):
-    context_dict = {}
-    context_dict['message'] ="This is the profile page"
-    return render(request, 'musicBlogger/profile.html', context=context_dict)
+def profile(request, profile_id):
+    cprofile = get_object_or_404(UserProfile, pk=profile_id)
+    return render(request, 'musicBlogger/profile.html', {'profile': profile})
 
 
 
@@ -117,3 +122,22 @@ def new_account(request):
     context_dict = {'user_form': user_form,'profile_form': profile_form,'registered': registered}
 
     return render(request,'musicBlogger/new_account.html',context=context_dict)
+
+
+
+
+# def search(request):
+#     query = request.GET.get('q', '')
+#     results_songs = Songs.objects.filter(
+#         Q(field1__icontains=query) | Q(field2__icontains=query)
+#     )
+#     results_profiles = UserProfile.objects.filter(
+#         Q(field1__icontains=query) | Q(field2__icontains=query)
+#     )
+#     results_blogs = Blogs.objects.filter(
+#         Q(field1__icontains=query) | Q(field2__icontains=query)
+#     )
+#     data_songs = serializers.serialize('json', results_songs)
+#     data_profiles = serializers.serialize('json', results_profiles)
+#     data_blogs = serializers.serialize('json', results_blogs)
+#     return JsonResponse({'results_songs': data_songs, 'results_profiles': data_profiles, 'results_blogs': data_blogs}, safe=False)
