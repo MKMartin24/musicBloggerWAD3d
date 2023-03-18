@@ -1,15 +1,13 @@
-<!DOCTYPE html>
+
+{% extends 'musicBlogger/base.html' %}
 {% load staticfiles %}
-<html lang="en">
-<head>
-    <title>Profile</title>
-    <meta charset="utf-8" name = "viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
+
+{% block title_block %}
+Profile
+{% endblock %}
+
+
+{% block body_block %}
     <div class="profile-container">
         <div class="profile-items">
             <div class="profile-info">
@@ -34,9 +32,13 @@
                             <p class="song-title">A&W</p>
                             <p class="song-author-name">Lana Del Rey</p>
                         </div>
-                        <button class="like-icon-style"></button>
+                        <button class="like-icon-style">
+                            <img src="{% static 'img/like-icon.png' %}">
+                        </button>
                         <p class="song-time">7:13</p>
-                        <button class="play-btn-style"></button>
+                        <button class="play-btn-style">
+                            <img src="{% static 'img/play-icon.png' %}">
+                        </button>
                     </div>
                     <div class="track-container">
                         <img src="{% static 'img/track-img.png' %}" class="song-img">
@@ -44,9 +46,13 @@
                             <p class="song-title">A&W</p>
                             <p class="song-author-name">Lana Del Rey</p>
                         </div>
-                        <button class="like-icon-style"></button>
+                        <button class="like-icon-style">
+                            <img src="{% static 'img/like-icon.png' %}">
+                        </button>
                         <p class="song-time">7:13</p>
-                        <button class="play-btn-style"></button>
+                        <button class="play-btn-style">
+                            <img src="{% static 'img/play-icon.png' %}">
+                        </button>
                     </div>
                     <div class="track-container">
                         <img src="{% static 'img/track-img.png' %}" class="song-img">
@@ -54,9 +60,13 @@
                             <p class="song-title">A&W</p>
                             <p class="song-author-name">Lana Del Rey</p>
                         </div>
-                        <button class="like-icon-style"></button>
+                        <button class="like-icon-style">
+                            <img src="{% static 'img/like-icon.png' %}">
+                        </button>
                         <p class="song-time">7:13</p>
-                        <button class="play-btn-style"></button>
+                        <button class="play-btn-style">
+                            <img src="{% static 'img/play-icon.png' %}">
+                        </button>
                     </div>
                 </div>
             </div>
@@ -92,18 +102,23 @@
                     </div>
                     <hr class="divider">
                     <div class="history-track-container">
-                        <img src="img/track-img.png" class="song-img">
+                        <img src="{% static 'img/track-img.png'%}" class="song-img">
                         <div class="song-main-info">
                             <p class="song-title">A&W</p>
                             <p class="song-author-name">Lana Del Rey</p>
                         </div>
-                        <button class="like-icon-style"></button>
+                        <button class="like-icon-style">
+                            <img src="{% static 'img/like-icon.png' %}">
+                        </button>
                         <p class="song-time">7:13</p>
-                        <button class="play-btn-style"></button>
+                        <button class="play-btn-style">
+                            <img src="{% static 'img/play-icon.png' %}">
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</body>
-</html>
+
+
+{% endblock %}

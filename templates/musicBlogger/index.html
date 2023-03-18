@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% extends 'musicBlogger/base.html' %}
+{% load staticfiles %}
+<html lang="en">
+{% block title_block %}
+    Homepage
+{% endblock %}
+
+{% block body_block %}
+    <!-- Header for about page-->
+    <main>
+        <h5 class="small-text">Artists you may like</h5>
+        <div class="profile-container">
+            <div class="profile-items">
+                <div class="profile-info">
+                    <div class="profile-title">
+                        <img class="profile-img-style" src="{% static 'img/profile-img.jpg' %}">
+                        <div class="profile-text">
+                            <h2 class="name-text">Lana Del Rey</h2>
+                            <h3 class="location-text">New York, USA</h3>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </main>
+{% endblock %}

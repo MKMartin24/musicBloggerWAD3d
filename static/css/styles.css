@@ -1,7 +1,7 @@
 body{
     background: linear-gradient(246.97deg, rgba(50, 120, 255, 0.6) 15.77%, rgba(255, 238, 83, 0.6) 82.66%);
     background-repeat: no-repeat;
-    height: 100vh;
+    height: 200vh;
 }
 
 .login-container{
@@ -290,13 +290,8 @@ body{
 }
 
 .artist-arrow-style{
+    margin-bottom: 40px;
     padding: 0;
-    margin: 0;
-    border: 0;
-    background-image: url("img/artists-arrow.png");
-    width: 20px;
-    height: 20px;
-    background-color: rgba(0, 0, 0, 0);
 }
 
 .artist-right-arrow-style{
@@ -417,12 +412,7 @@ body{
     margin-top: 20px;
     margin-left: 100px;
     border: 0;
-    background-image: url("img/like-icon.png");
     background-color: rgba(0, 0, 0, 0);
-}
-
-.like-icon-style:active{
-    background-image: url("img/liked-icon.png");
 }
 
 .song-time{
@@ -440,8 +430,20 @@ body{
     height: 40px;
     margin-top: 10px;
     margin-left: 50px;
-    background-image: url("img/play-icon.png");
     background-color: rgba(0, 0, 0, 0);
     border: 0;
     padding: 0;
 }
+
+/* 
+.header-container{
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0px 4px 10px 3px rgba(102, 99, 99, 0.05);
+    border-radius: 40px;
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+    padding-bottom: 60px;
+} */
