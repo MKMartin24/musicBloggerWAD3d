@@ -55,7 +55,7 @@ def login(request):
             return HttpResponse("Invalid login details supplied.")
     
     else:
-        return render(request, 'musicBlogger/login.html', context=context_dict)
+        return render(request, 'musicBlogger/login.html')
 
 
 @login_required
