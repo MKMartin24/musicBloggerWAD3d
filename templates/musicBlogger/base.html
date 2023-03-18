@@ -26,6 +26,7 @@
                 <a href="{% url 'musicBlogger:contact_us' %}">Contact Us</a>
                 {% if user.is_authenticated %}
                     <a href="{% url 'musicBlogger:profile' %}">User Profile</a>
+                    <a href="{% url 'musicBlogger:logout' %}">Logout</a>
                 {% else %}
                     <a href="{% url 'musicBlogger:login' %}">Login</a>
                 {% endif %}
