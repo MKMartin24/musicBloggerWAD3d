@@ -22,7 +22,7 @@ class Songs (models.Model):
 
     
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='user_profile', on_delete=models.CASCADE)
     text = models.CharField(max_length=1000)
     image = models.ImageField(upload_to='profile_images', blank=True)
     likedSong = models.ManyToManyField(Songs, related_name='liked_song')
