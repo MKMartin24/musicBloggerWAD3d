@@ -1,10 +1,11 @@
 
 from datetime import datetime
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from django.urls import reverse, resolve
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
 from musicBlogger.models import UserProfile,Artist,Songs,Blogs,Comments
 from musicBlogger.forms import UserForm, UserProfileForm
 
