@@ -18,17 +18,17 @@
     </head>
     <body>
         
-        <div class="profile-container">
+        <div class='header-container'>
             {% block header %}
-                <a href="{% url 'musicBlogger:index' %}"><img src="{% static 'images/musicBloggerLogo.png' %}" alt="Logo" /></a>
-                <a href="{% url 'musicBlogger:search_blogs' %}">Search</a>
-                <a href="{% url 'musicBlogger:about' %}">About</a>
-                <a href="{% url 'musicBlogger:contact_us' %}">Contact Us</a>
+                <a class='link-style' href="{% url 'musicBlogger:index' %}"><img class='artist-img-style-img-style' src="{% static 'images/musicBloggerLogo.png' %}" alt="Logo" /></a>
+                <a class='link-style' href="{% url 'musicBlogger:search_blogs' %}"><p class='small-text'>Search</p></a>
+                <a class='link-style' href="{% url 'musicBlogger:about' %}"><p class='small-text'>About</p></a>
+                <a class='link-style' href="{% url 'musicBlogger:contact_us' %}"><p class='small-text'>Contact Us</p></a>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'musicBlogger:profile' %}">User Profile</a>
-                    <a href="{% url 'musicBlogger:logout' %}">Logout</a>
+                    <a class='link-style' href="{% url 'musicBlogger:profile' %}"><p class='small-text'>User Profile</p></a>
+                    <a class='link-style' href="{% url 'musicBlogger:logout' %}"><p class='small-text'>Logout</p></a>
                 {% else %}
-                    <a href="{% url 'musicBlogger:login' %}">Login</a>
+                    <a class='link-style' href="{% url 'musicBlogger:login' %}"><p class='small-text'>Login</p></a>
                 {% endif %}
             {% endblock %}
         </div>
