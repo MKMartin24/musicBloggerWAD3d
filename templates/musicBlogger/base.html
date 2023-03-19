@@ -21,7 +21,7 @@
         <div class="profile-container">
             {% block header %}
                 <a href="{% url 'musicBlogger:index' %}"><img src="{% static 'images/musicBloggerLogo.png' %}" alt="Logo" /></a>
-                <a href="{% url 'musicBlogger:search' %}">Search</a>
+                <a href="{% url 'musicBlogger:search_blogs' %}">Search</a>
                 <a href="{% url 'musicBlogger:about' %}">About</a>
                 <a href="{% url 'musicBlogger:contact_us' %}">Contact Us</a>
                 {% if user.is_authenticated %}
