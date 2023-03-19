@@ -16,7 +16,7 @@ Search Blogs
 {% endblock %}
 
 {% block body_block %}
-
+<a href="{% url 'musicBlogger:search_users' %}">Search Users</a>
 {% if blogs %}
 {% for blog in blogs %}
     <img src="{{blog.image}}" alt="{{blog.title}} Picture"/>

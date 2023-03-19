@@ -65,9 +65,9 @@ def user_logout(request):
     logout(request)
     return redirect(reverse('musicBlogger:index'))
 
-def search(request):
+def search_blogs(request):
     context_dict = {}
-    return render(request, 'musicBlogger/searchBlog.html', context=context_dict)
+    return render(request, 'musicBlogger/searchBlogs.html', context=context_dict)
 
 def add_blog(request, blog_name_slug):
     context_dict = {}
@@ -114,3 +114,14 @@ def new_account(request):
     context_dict = {'user_form': user_form,'profile_form': profile_form,'registered': registered}
 
     return render(request,'musicBlogger/new_account.html',context=context_dict)
+
+@login_required
+def write_blog(request):
+    context_dictionary = {}
+    return render(request,'musicBlogger/writeBlog.html',context=context_dictionary)
+
+
+def search_users(request):
+    context_dictionary = {}
+    return render(request,'musicBlogger/searchUsers.html',context=context_dictionary)
+
