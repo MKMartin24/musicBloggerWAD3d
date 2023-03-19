@@ -1,10 +1,9 @@
-from django.shortcuts import render, get_object_or_404
-from django.shortcuts import redirect
+from datetime import datetime
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, resolve
-from musicBlogger.forms import UserForm, UserProfileForm
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -13,34 +12,60 @@ from django.http import JsonResponse
 from django.db.models import Q
 from django.core import serializers
 
+
+from musicBlogger.models import UserProfile,Artist,Songs,Blogs,Comments
+from musicBlogger.forms import UserForm, UserProfileForm
+
+
 # Create your views here.
+def get_server_side_cookie(request, cookie, default_val=None):
+    val = request.session.get(cookie)
+    if not val:
+        val = default_val
+    return val
+
+
+def visitor_cookie_handler(request):
+    visits = int(get_server_side_cookie(request, 'visits', '1'))
+    last_visit_cookie = get_server_side_cookie(request, 'last_visit', str(datetime.now()))
+    last_visit_time = datetime.strptime(last_visit_cookie[:-7], '%Y-%m-%d %H:%M:%S')
+    if (datetime.now() - last_visit_time).days > 0:
+        visits += 1
+        request.session['last_visit'] = str(datetime.now())
+    else:
+        request.session['last_visit'] = last_visit_cookie
+    request.session['visits'] = visits
+
+
 def index(request):
     context_dict = {}
-    context_dict['message'] ="this is the index page"
+    context_dict['message'] = "this is the index page"
     return render(request, 'musicBlogger/index.html', context=context_dict)
+
 
 def about(request):
     context_dict = {}
-    context_dict['message']="This is the about page"
+    context_dict['message'] = "This is the about page"
     return render(request, 'musicBlogger/about.html', context=context_dict)
 
-def styling_function(request, add_to_recent, context_dict):
 
-    if(add_to_recent):
+def styling_function(request, add_to_recent, context_dict):
+    if (add_to_recent):
         context_dict["page"] = "musicBlogger:" + resolve(request.path_info).url_name
         recent = request.COOKIES.get("recent")
-        if(recent):
+        if (recent):
             context_dict["recent"] = recent.split(",")
 
     try:
         username = request.user.username
         user_data = User.objects.get(username=username)
         user_profile = UserProfile.objects.get(user=user_data)
-        context_dict["profile_picture"] =  user_profile.picture
-    except: #User does not exist
+        context_dict["profile_picture"] = user_profile.picture
+    except:  # User does not exist
         pass
 
-def login(request):
+
+def user_login(request):
     context_dict = {}
     styling_function(request, True, context_dict)
 
@@ -48,8 +73,8 @@ def login(request):
 
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(username=username, password=password) # Checks if valid password.
- 
+        user = authenticate(username=username, password=password)  # Checks if valid password.
+
         if user:
             if user.is_active:
                 login(request, user)
@@ -59,45 +84,44 @@ def login(request):
         else:
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
-    
+
     else:
-        return render(request, 'musicBlogger/login.html', context=context_dict)
+        return render(request, 'musicBlogger/login.html')
 
 
 @login_required
-def logout(request):
+def user_logout(request):
     logout(request)
     return redirect(reverse('musicBlogger:index'))
 
-def search(request):
+
+def search_blogs(request):
     context_dict = {}
-    context_dict['message'] ="This is the search page"
-    return render(request, 'musicBlogger/searchBlog.html', context=context_dict)
+    return render(request, 'musicBlogger/searchBlogs.html', context=context_dict)
+
 
 def add_blog(request, blog_name_slug):
     context_dict = {}
-    context_dict['message'] ="This is the add blog page"
     return render(request, 'musicBlogger/add_blog.html', context=context_dict)
+
 
 def view_blog(request):
     context_dict = {}
-    context_dict['message'] ="This is the view blog page"
     return render(request, 'musicBlogger/viewBlog.html', context=context_dict)
+
 
 def contact_us(request):
     context_dict = {}
-    context_dict['message'] ="This is the contact us page"
     return render(request, 'musicBlogger/contact_us.html', context=context_dict)
 
-def profile(request, profile_id):
-    cprofile = get_object_or_404(UserProfile, pk=profile_id)
-    return render(request, 'musicBlogger/profile.html', {'profile': profile})
 
+def profile(request):
+    context_dict = {}
+    return render(request, 'musicBlogger/profile.html', context=context_dict)
 
 
 def new_account(request):
     context_dict = {}
-    context_dict['message'] ="This is the new account page"
     registered = False
     if request.method == 'POST':
         user_form = UserForm(request.POST)
@@ -109,6 +133,7 @@ def new_account(request):
             user.save()
             profile = profile_form.save(commit=False)
             profile.user = user
+            profile.name = user
             if 'image' in request.FILES:
                 profile.picture = request.FILES['image']
             profile.save()
@@ -119,25 +144,33 @@ def new_account(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-    context_dict = {'user_form': user_form,'profile_form': profile_form,'registered': registered}
+    context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
 
-    return render(request,'musicBlogger/new_account.html',context=context_dict)
-
-
+    return render(request, 'musicBlogger/new_account.html', context=context_dict)
 
 
-# def search(request):
-#     query = request.GET.get('q', '')
-#     results_songs = Songs.objects.filter(
-#         Q(field1__icontains=query) | Q(field2__icontains=query)
-#     )
-#     results_profiles = UserProfile.objects.filter(
-#         Q(field1__icontains=query) | Q(field2__icontains=query)
-#     )
-#     results_blogs = Blogs.objects.filter(
-#         Q(field1__icontains=query) | Q(field2__icontains=query)
-#     )
-#     data_songs = serializers.serialize('json', results_songs)
-#     data_profiles = serializers.serialize('json', results_profiles)
-#     data_blogs = serializers.serialize('json', results_blogs)
-#     return JsonResponse({'results_songs': data_songs, 'results_profiles': data_profiles, 'results_blogs': data_blogs}, safe=False)
+@login_required
+def write_blog(request):
+    context_dictionary = {}
+    return render(request, 'musicBlogger/writeBlog.html', context=context_dictionary)
+
+
+def search_users(request):
+    context_dictionary = {}
+    return render(request,'musicBlogger/searchUsers.html',context=context_dictionary)
+
+def search(request):
+    query = request.GET.get('q', '')
+    results_songs = Songs.objects.filter(
+        Q(field1__icontains=query) | Q(field2__icontains=query)
+    )
+    results_profiles = UserProfile.objects.filter(
+        Q(field1__icontains=query) | Q(field2__icontains=query)
+    )
+    results_blogs = Blogs.objects.filter(
+        Q(field1__icontains=query) | Q(field2__icontains=query)
+    )
+    data_songs = serializers.serialize('json', results_songs)
+    data_profiles = serializers.serialize('json', results_profiles)
+    data_blogs = serializers.serialize('json', results_blogs)
+    return JsonResponse({'results_songs': data_songs, 'results_profiles': data_profiles, 'results_blogs': data_blogs}, safe=False)

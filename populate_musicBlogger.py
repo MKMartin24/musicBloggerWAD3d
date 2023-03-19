@@ -1,109 +1,135 @@
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE','musicBloggerWAD3d.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'musicBloggerWAD3d.settings')
 
 import django
 django.setup()
-from musicBlogger.models import Songs, UserProfile, Blogs, Comments
+from musicBlogger.models import *
 from django.contrib.auth.models import User
 
+
 def populate():
-    
-    madeBy = [
-        {'user': 'The Weeknd'}
-    ]
-    blogs_title = [
-        {'title': 'Top song of 2022'}
-    ]
-    date = [
-        {'date': 23/2/2023}
-    ]
-    #image = [
-        #'userProfile1'
-    #]
-    Songs_name = [
-        'blinding light', 'idk', 'light'
-    ]
-    Songs = [
-        {'name':Songs_name[i], 'text':'Best song', 'spotifyURL':'https://open.spotify.com/artist/1Xyo4u8uXC1ZmMpatF05PJ', 'youtubeURL':'https://www.youtube.com/watch?v=4NRXx6U8ABQ&ab_channel=TheWeekndVEVO', 
-        'description':'by The Weeknd','madeBy':madeBy}
+
+    test_users = [
+        {'user_name': 'Jay345', 'email': 'jay345@gmail.com', 'password': 'Jay345123'},
+        {'user_name': 'Issac123', 'email': 'issac123@gmail.com', 'password': 'Issac123456'},
+        {'user_name': 'Henry678', 'email': 'henry678@gmail.com', 'password': 'henry6789'},
     ]
 
+    for i in test_users:
+        add_user(i['user_name'], i['password'], i['email'])
 
-    blogs = [ 
-        {'title': blogs_title,'date': date,'text': 'No.1: Blinding lights','postedBy': madeBy}
+    userprofile_list = [
+        {'user': User.objects.get(username='Jay345'), 'text': 'Normal person who love The weekend',
+         'image_name': 'userProfile1.jpg'},
+        {'user': User.objects.get(username='Issac123'), 'text': 'No.1 fans of The weekend',
+         'image_name': 'userProfile1.jpg'},
+        {'user': User.objects.get(username='Henry678'), 'text': 'The weekend is the best',
+         'image_name': 'userProfile1.jpg'},
     ]
 
-    blog_comment = [
-        {'content': 'When is the new album gonna release', 'date':date, 'commentBy':'ScH'}
+    for i in userprofile_list:
+        add_user_profile(i['user'], i['text'], i['image_name'])
+
+    blogs_list = [
+        {'title': 'My favourite music in 2021', 'image': 'blogs1.jpg', 'text': 'No.1: Blinding light', 'post_by': UserProfile.objects.get(text='Normal person who love The weekend')},
+        {'title': 'My favourite music all the time', 'image': 'blogs2.jpg', 'text': "No.1: It's my life", 'post_by': UserProfile.objects.get(text='The weekend is the best')}
     ]
 
-    tset_users = [ 
-        {'user_name':'Jay345', 'email' : 'jay345@gmail.com'}
-        #,{'id':3000000, 'user_name':'Issac123','email': 'issac123@gmail.com'}    
+    for i in blogs_list:
+        add_blog(i['title'], i['image'], i['text'], i['post_by'])
+
+    comments_list = [
+        {'content': 'When is the new album gonna release', 'blog': Blogs.objects.get(title='My favourite music in 2021'),
+         'commentBy': UserProfile.objects.get(user=User.objects.get(username='Jay345'))}
     ]
 
-    userProfile = [
-        {'user': 'Jay345', 'text':'Normal person who love The weekend', 'likedSong':'Blindlights','artist':'Jay', 'follows':4 }
+    for i in comments_list:
+        add_comment(i['content'], i['blog'], i['commentBy'])
+
+    artist_list = [
+        {'artistName': 'The weeknd'},
+        {'artistName': 'Linkin Park'},
+        {'artistName': 'Coldplay'}
+
     ]
 
-    a = UserProfile.objects.get()
+    for i in artist_list:
+        add_artist(i['artistName'])
 
-    a.likedSong.add(Songs.objects.get(name='Blindlights'))
+    songs_list = [
+        {'name': 'Paradise', 'text': 'Gold', 'spotifyURL': "https://open.spotify.com/search/Coldplay%20Para",
+         'youtubeURL': "https://www.youtube.com/watch?v=1G4isv_Fylg&ab_channel=Coldplay",
+         'description': '11 years ago, but still gold', 'image': 'song1.jpg', 'genre': 'pop music',
+         'madeBy': Artist.objects.get(artistName='Coldplay')}
+    ]
+
+    for i in songs_list:
+        add_song(i['name'], i['text'], i['spotifyURL'], i['youtubeURL'], i['description'], i['image'], i['genre'], i['madeBy'])
+
+    a = UserProfile.objects.get(text='Normal person who love The weekend')
+    b = UserProfile.objects.get(text='No.1 fans of The weekend')
+    c = UserProfile.objects.get(text='The weekend is the best')
+
+    s = Songs.objects.get(name='Paradise')
+    # s2 = Songs.objects.get(name='')
+    a.likedSong.add(s)
+    # a.likedSong.add(s, s2, s3)
+
+    art1 = Artist.objects.get(artistName='Coldplay')
+    art2 = Artist.objects.get(artistName='The weeknd')
+    art3 = Artist.objects.get(artistName='Linkin Park')
+    a.artist.add(art1, art2, art3)
+
+    a.follows.add(b)
+    b.follows.add(a)
+    c.follows.add(a, b)
+
     a.save()
-        
-    for user in tset_users:
-        user_added = add_user(user['user_name'], user['email'])
-        add_user_profile()
-    
+    b.save()
+    c.save()
 
-    users = User.objects.all()
-    user_list = []
-    for user in users:
-        user_id = user.id
-        userProfile = add_user_profile(user, user_id)
-        user_list.append(userProfile)
 
-    for blogs, in blogs.items():
-        name = ['Title']      
-        b = add_blog(name, user_list)     
-        content = blog_comment.content 
-        madeBy = blog_comment.commentBy
-        add_blogs_comments(content,b,madeBy)
 
-    print("Population script finished.")
 
-def add_user_profile(user, text):
-    u = UserProfile.objects.get_or_create(name=user, text=text)[0]
+
+
+def add_user_profile(user, text, image_name):
+    u = UserProfile.objects.get_or_create(user=user, text=text, image="/profile_images/"+image_name)[0]
     u.save()
     return u
-
-def add_blogs_comments(blog, comment):
-    for com in blog['comments']:
-        add_comment(comment, com['blog'], add_user)
 
 
 def add_user(user_name, password, email):
     u = User.objects.get_or_create(username=user_name, email=email)[0]
     u.set_password = password
+    u.save()
     return u
 
-def add_blog(name, postBy):
-    Blogs = Blogs.objects.get_or_create(name=name, postBy=postBy)[0]
-    Blogs.save()
-    return Blogs
 
-def add_song(name, madeBy):
-    Songs = Songs.objects.get_or_create(name=name, madeBy=madeBy)[0]
-    Songs.save()
-    return Songs
+def add_blog(title, image_name, text, postBy):
+    b = Blogs.objects.get_or_create(title=title, image='/blog_images/'+image_name, text=text, postedBy=postBy)[0]
+    b.save()
+    return b
+
+
+def add_song(name, text, spotifyURL, youtubeURL, description, image, genre, madeBy):
+    s = Songs.objects.get_or_create(name=name, text=text, spotifyURL=spotifyURL, youtubeURL=youtubeURL,
+                                    description=description, image="/cover_images/"+image, genre=genre, madeBy=madeBy)[0]
+    s.save()
+    return s
 
 def add_comment(content, blog, commentedBy):
     com = Comments.objects.get_or_create(content = content, blog=blog, commentedBy=commentedBy)[0]
     com.save()
     return com
 
+def add_artist(artistName):
+    a = Artist.objects.get_or_create(artistName=artistName)[0]
+    a.save()
+    return a
 
 # Start excution here
 if __name__ == '__main__':
     print('Starting Rango population script...')
     populate()
+    print('Finished')

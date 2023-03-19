@@ -6,11 +6,13 @@ Search users
 {% endblock %}
 
 {% block body_block %}
+<a href="{% url 'musicBlogger:search_blogs' %}">Search</a>
 {%if userProfiles %}
 {% for profile in userProfiles %}
 {{ profile.picture }}
 {{ profile.user.username }}
+{% endfor %}
 {% else %}
-Couldn't find any users
+<p>Couldn't find any users</p>
 {% endif %}
 {% endblock %}
