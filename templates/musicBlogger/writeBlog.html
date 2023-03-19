@@ -1,0 +1,23 @@
+{% extends 'musicBlogger/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+Write Blog
+{% endblock %}
+
+{% block body_block %}
+    <div class="login-container">
+        <div class="login-items">
+            <p class="page-title">What are you thinking about?</p>
+            <form class="form-style" id="write_blog_form" method="post" action="{% url 'musicBlogger:write_blog' %}">
+                {% csrf_token %}
+                <input placeholder="Write here..." type="text" class="login-input-style" name="username">
+                <input class="button-style" type="submit" value = "post" />
+            </form>
+            <div class="signin-text-container">
+                <h5 class="small-text">If you don't submit, your progress won't be saved</h5>
+                <a class="link-style" href="{% url 'musicBlogger:profile' %}">Back to profile page</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
