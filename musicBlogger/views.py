@@ -5,6 +5,14 @@ from django.urls import reverse, resolve
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import redirect
+from models import Songs, Blogs, UserProfile
+from django.http import JsonResponse
+from django.db.models import Q
+from django.core import serializers
+
 
 from musicBlogger.models import UserProfile,Artist,Songs,Blogs,Comments
 from musicBlogger.forms import UserForm, UserProfileForm
@@ -126,3 +134,18 @@ def search_users(request):
     context_dictionary = {}
     return render(request,'musicBlogger/searchUsers.html',context=context_dictionary)
 
+def search(request):
+    query = request.GET.get('q', '')
+    results_songs = Songs.objects.filter(
+        Q(field1__icontains=query) | Q(field2__icontains=query)
+    )
+    results_profiles = UserProfile.objects.filter(
+        Q(field1__icontains=query) | Q(field2__icontains=query)
+    )
+    results_blogs = Blogs.objects.filter(
+        Q(field1__icontains=query) | Q(field2__icontains=query)
+    )
+    data_songs = serializers.serialize('json', results_songs)
+    data_profiles = serializers.serialize('json', results_profiles)
+    data_blogs = serializers.serialize('json', results_blogs)
+    return JsonResponse({'results_songs': data_songs, 'results_profiles': data_profiles, 'results_blogs': data_blogs}, safe=False)
