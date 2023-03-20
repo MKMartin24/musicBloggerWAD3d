@@ -3,32 +3,28 @@ function search() {
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
-      var data = JSON.parse(xhr.responseText);
-      showResults(data.results_songs, "cover_images"); 
-      showResults(data.results_profiles, "profile_images");
-      showResults(data.results_blogs, "blog_images");
+      var results_songs = JSON.parse(xhr.responseText);
+      showResults(results_songs); 
     }
   };
   xhr.open('GET', '/search?q=' + query);
   xhr.send();
 }
 
-function showResults(results, type) {
+function showResults(results_songs) {
   var output = '';
-  if (results.length > 0) {
+  if (results_songs.length > 0) {
       output += '<div>';
-      for (var i = 0; i < results.length; i++) {
-        template(results[i].name, type+"/"+results[i].name, results[i].text);
+      for (var i = 0; i < results_songs.length; i++) {
+        output += '<div class="song">';
+        output += '<h3>' + results_songs[i].name + '</h3>';
+        output += '<img src="' + results_songs[i].image + '">';
+        output += '<p>' + results_songs[i].text + '</p>';
+        output += '</div>';
       }
       output += '</div>';
   } else {
       output += 'No results found.';
   }
-  document.getElementById('type').innerHTML = output;
-}
-function template(name, image, text) {
-  return '<div class = "profile"><h3>' + name + 
-  '</h3> <img src="' +
-  image + '"><p>' +
-  text + '</p></div>';
+  document.getElementById('results_songs').innerHTML = output;
 }
