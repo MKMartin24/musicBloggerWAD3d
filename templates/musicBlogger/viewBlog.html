@@ -1,12 +1,12 @@
 {% extends 'musicBlogger/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title_block %}
 {{blog.title}}
 {% endblock %}
 
-{% body body_block %}
-<p>{{blog.postedBy.}}</p>
+{% block body_block %}
+<p>{{blog.postedBy}}</p>
 <p>{{blog.date}}</p>
 <p>{{blog.title}}</p>
 <p>{{blog.image}}</p>
