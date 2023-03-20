@@ -5,6 +5,7 @@ import django
 django.setup()
 from musicBlogger.models import *
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 def populate():
@@ -99,9 +100,10 @@ def add_user_profile(name, text, image_name):
     return u
 
 
+
 def add_user(name, password, email):
-    u = User.objects.get_or_create(username=name, email=email)[0]
-    u.set_password = password
+    u = User.objects.get_or_create(username=name, email=email, last_login = timezone.now())[0]
+    u.set_password(password)
     u.save()
     return u
 
