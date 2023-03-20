@@ -10,7 +10,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.db.models import Q
 from django.core import serializers
-
+import json
 
 from musicBlogger.models import UserProfile,Artist,Songs,Blogs,Comments,User
 from musicBlogger.forms import UserForm, UserProfileForm
@@ -154,30 +154,34 @@ def write_blog(request):
     return render(request, 'musicBlogger/writeBlog.html', context=context_dictionary)
 
 
-def search_users(request):
-    context_dictionary = {}
-    return render(request,'musicBlogger/searchUsers.html',context=context_dictionary)
 
-def search(request):
-    query = request.GET.get('q', '')
-    results_songs = Songs.objects.filter(
-        Q(name__icontains=query)
-    )
-    # results_profiles = UserProfile.objects.filter(
-    #     Q(name__icontains=query)
-    # )
-    # results_blogs = Blogs.objects.filter(
-    #     Q(name__icontains=query)
-    # )
-    data_songs = serializers.serialize('json', results_songs)
-    # data_profiles = serializers.serialize('json', results_profiles)
-    # data_blogs = serializers.serialize('json', results_blogs)
-    return render(request, 'musicBlogger/search.html', {'results_songs': results_songs})
-    # return JsonResponse({'results_songs': data_songs}, safe=False)
-    # return JsonResponse({'results_songs': data_songs, 'results_profiles': data_profiles, 'results_blogs': data_blogs}, safe=False)
     
 
-def search_page(request):
-    results_songs = Songs.objects.all()
-    data_songs = serializers.serialize('json', results_songs)
-    return render(request, 'musicBlogger/search.html', {'results_songs': results_songs})
+def search_page(request, query=None):
+
+    try:
+        query = request.GET['query']
+        if len(query) > 0:
+            results_profiles = UserProfile.objects.filter(
+            Q(name__username__icontains=query)
+            )
+            
+            results_songs = Songs.objects.filter(
+            Q(name__icontains=query)
+            )
+            
+            results_blogs = Blogs.objects.filter(
+            Q(name__icontains=query)
+            )
+        else:
+            results_songs = Songs.objects.all()
+            results_profiles = UserProfile.objects.all()
+            results_blogs = Blogs.objects.all()
+        return  render(request, 'musicBlogger/search_results.html', {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs})
+    except KeyError:
+        results_songs = Songs.objects.all()
+        results_profiles = UserProfile.objects.all()
+        results_blogs = Blogs.objects.all()
+        return render(request, 'musicBlogger/search.html', {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs})
+   
+    
