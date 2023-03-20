@@ -1,4 +1,4 @@
-{% extends 'musicBlogger/base.html' %}
+<!-- {% extends 'musicBlogger/base.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -27,4 +27,27 @@ Search Blogs
 <p>Unable to find any blogs</p>
 {% endif %}
 
+{% endblock %} -->
+
+
+{% extends 'musicBlogger/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    <title>Search Results</title>
+    <script src="path/to/your/javascript/file.js"></script>
+{% endblock %}
+{% block body_block %}
+    <h1>Search</h1>
+    <input type="text" id="search-input" placeholder="Search...">
+    <button onclick="search()">Search</button>
+    
+    <h2>Song Results</h2>
+    <div id="cover_images"></div>
+    
+    <h2>User Profile Results</h2>
+    <div id="profile_images"></div>
+    
+    <h2>Blog Results</h2>
+    <div id="blog_images"></div>
 {% endblock %}

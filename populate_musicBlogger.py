@@ -10,37 +10,37 @@ from django.contrib.auth.models import User
 def populate():
 
     test_users = [
-        {'user_name': 'Jay345', 'email': 'jay345@gmail.com', 'password': 'Jay345123'},
-        {'user_name': 'Issac123', 'email': 'issac123@gmail.com', 'password': 'Issac123456'},
-        {'user_name': 'Henry678', 'email': 'henry678@gmail.com', 'password': 'henry6789'},
+        {'name': 'Jay345', 'email': 'jay345@gmail.com', 'password': 'Jay345123'},
+        {'name': 'Issac123', 'email': 'issac123@gmail.com', 'password': 'Issac123456'},
+        {'name': 'Henry678', 'email': 'henry678@gmail.com', 'password': 'henry6789'},
     ]
 
     for i in test_users:
-        add_user(i['user_name'], i['password'], i['email'])
+        add_user(i['name'], i['password'], i['email'])
 
     userprofile_list = [
-        {'user': User.objects.get(username='Jay345'), 'text': 'Normal person who love The weekend',
+        {'name': User.objects.get(username='Jay345'), 'text': 'Normal person who love The weekend',
          'image_name': 'userProfile1.jpg'},
-        {'user': User.objects.get(username='Issac123'), 'text': 'No.1 fans of The weekend',
+        {'name': User.objects.get(username='Issac123'), 'text': 'No.1 fans of The weekend',
          'image_name': 'userProfile1.jpg'},
-        {'user': User.objects.get(username='Henry678'), 'text': 'The weekend is the best',
+        {'name': User.objects.get(username='Henry678'), 'text': 'The weekend is the best',
          'image_name': 'userProfile1.jpg'},
     ]
 
     for i in userprofile_list:
-        add_user_profile(i['user'], i['text'], i['image_name'])
+        add_user_profile(i['name'], i['text'], i['image_name'])
 
     blogs_list = [
-        {'title': 'My favourite music in 2021', 'image': 'blogs1.jpg', 'text': 'No.1: Blinding light', 'post_by': UserProfile.objects.get(text='Normal person who love The weekend')},
-        {'title': 'My favourite music all the time', 'image': 'blogs2.jpg', 'text': "No.1: It's my life", 'post_by': UserProfile.objects.get(text='The weekend is the best')}
+        {'name': 'My favourite music in 2021', 'image': 'blogs1.jpg', 'text': 'No.1: Blinding light', 'post_by': UserProfile.objects.get(text='Normal person who love The weekend')},
+        {'name': 'My favourite music all the time', 'image': 'blogs2.jpg', 'text': "No.1: It's my life", 'post_by': UserProfile.objects.get(text='The weekend is the best')}
     ]
 
     for i in blogs_list:
-        add_blog(i['title'], i['image'], i['text'], i['post_by'])
+        add_blog(i['name'], i['image'], i['text'], i['post_by'])
 
     comments_list = [
-        {'content': 'When is the new album gonna release', 'blog': Blogs.objects.get(title='My favourite music in 2021'),
-         'commentBy': UserProfile.objects.get(user=User.objects.get(username='Jay345'))}
+        {'content': 'When is the new album gonna release', 'blog': Blogs.objects.get(name='My favourite music in 2021'),
+         'commentBy': UserProfile.objects.get(name=User.objects.get(username='Jay345'))}
     ]
 
     for i in comments_list:
@@ -93,21 +93,21 @@ def populate():
 
 
 
-def add_user_profile(user, text, image_name):
-    u = UserProfile.objects.get_or_create(user=user, text=text, image="/profile_images/"+image_name)[0]
+def add_user_profile(name, text, image_name):
+    u = UserProfile.objects.get_or_create(name=name, text=text, image="/profile_images/"+image_name)[0]
     u.save()
     return u
 
 
-def add_user(user_name, password, email):
-    u = User.objects.get_or_create(username=user_name, email=email)[0]
+def add_user(name, password, email):
+    u = User.objects.get_or_create(username=name, email=email)[0]
     u.set_password = password
     u.save()
     return u
 
 
-def add_blog(title, image_name, text, postBy):
-    b = Blogs.objects.get_or_create(title=title, image='/blog_images/'+image_name, text=text, postedBy=postBy)[0]
+def add_blog(name, image_name, text, postBy):
+    b = Blogs.objects.get_or_create(name=name, image='/blog_images/'+image_name, text=text, postedBy=postBy)[0]
     b.save()
     return b
 

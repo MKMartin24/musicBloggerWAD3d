@@ -22,7 +22,7 @@ class Songs (models.Model):
 
     
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, related_name='user_profile', on_delete=models.CASCADE)
+    name = models.OneToOneField(User, related_name='user_profile', on_delete=models.CASCADE)
     text = models.CharField(max_length=1000)
     image = models.ImageField(upload_to='profile_images', blank=True)
     likedSong = models.ManyToManyField(Songs, related_name='liked_song')
@@ -33,14 +33,14 @@ class UserProfile(models.Model):
     # [2, 3, 4]
     # follows = models.JsonField()
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.user.username)
+        self.slug = slugify(self.name.username)
         super(UserProfile, self).save(*args, **kwargs)
     def __str__(self):
-        return self.user.username
+        return self.name.username
 
 
 class Blogs(models.Model):
-    title = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
     date = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='blog_images', blank=True)
     text = models.CharField(max_length=4096)
