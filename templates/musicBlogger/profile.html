@@ -12,10 +12,10 @@ Profile
         <div class="profile-items">
             <div class="profile-info">
                 <div class="profile-title">
-                    <img class="profile-img-style" src="{% static 'img/profile-img.jpg' %}">
+                    <img class="profile-img-style" src="{% media '{{context.image}}' %}">
                     <div class="profile-text">
-                        <h2 class="name-text">Lana Del Rey</h2>
-                        <h3 class="location-text">New York, the USA</h3>
+                        <h2 class="name-text">{{context.name.username}}</h2>
+                        <h3 class="location-text">{{context.text}}</h3>
                     </div>
                 </div>
                 <div class="profile-categories-list">
@@ -119,6 +119,5 @@ Profile
             </div>
         </div>
     </div>
-
 
 {% endblock %}

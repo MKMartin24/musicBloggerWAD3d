@@ -16,7 +16,7 @@
     <div id="results_songs">
         {% for result in results_songs %}
             <div class="song">
-                <h3>{{ result.name }}</h3>
+                <h3><a href="{{ result.youtubeURL }}">{{ result.name }}</a></h3>
                 <img src="{{ result.image }}">
                 <p>{{ result.text }}</p>
             </div>
@@ -29,7 +29,7 @@
         <div id="results_profiles">
             {% for result in results_profiles %}
                 <div class="profile">
-                    <h3>{{ result.name }}</h3>
+                    <h3><a href="{% url 'musicBlogger:profile' username=result.name %}">{{ result.name }}</a></h3>
                     <img src="{{ result.image }}">
                     <p>{{ result.text }}</p>
                 </div>

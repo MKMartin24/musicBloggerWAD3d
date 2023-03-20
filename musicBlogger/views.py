@@ -154,7 +154,11 @@ def write_blog(request):
     return render(request, 'musicBlogger/writeBlog.html', context=context_dictionary)
 
 
-
+def profile(request, username):
+    user = get_object_or_404(User, username=username)
+    profile = get_object_or_404(UserProfile, name=user)
+    context = {'profile': profile}
+    return render(request, 'musicBlogger/profile.html', context)
     
 
 def search_page(request, query=None):
