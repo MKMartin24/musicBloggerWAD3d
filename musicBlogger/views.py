@@ -125,7 +125,6 @@ def new_account(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         profile_form = UserProfileForm(request.POST)
-
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()  # Save user form data to database
             user.set_password(user.password)
@@ -157,7 +156,13 @@ def write_blog(request):
 def profile(request, username):
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(UserProfile, name=user)
-    context = {'profile': profile}
+    liked_song = profile.likedSong.all()
+    following = profile.follows.all()
+    followers = UserProfile.objects.filter(follows=profile)
+    blogs = Blogs.objects.filter(postedBy=profile)
+    num_followers = followers.count()
+    num_following = followers.count()
+    context = {'profile': profile, "liked_song":liked_song, "following":following, "blogs":blogs, "num_followers":num_followers, "num_following":num_following}
     return render(request, 'musicBlogger/profile.html', context)
     
 

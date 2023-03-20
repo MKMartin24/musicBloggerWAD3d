@@ -11,46 +11,46 @@
     <h1>Search</h1>
     <input type="text" id="search-input" placeholder="Search...">
     <button onclick="search()">Search</button>
-    <div id="results">
-    <h2>Song Results</h2>
-    <div id="results_songs">
-        {% for result in results_songs %}
-            <div class="song">
-                <h3><a href="{{ result.youtubeURL }}">{{ result.name }}</a></h3>
-                <img src="{{ result.image }}">
-                <p>{{ result.text }}</p>
-            </div>
-        {% empty %}
-            No results found.
-        {% endfor %}
-      </div>
-
-    <h2>Profile Results</h2>
-        <div id="results_profiles">
-            {% for result in results_profiles %}
-                <div class="profile">
-                    <h3><a href="{% url 'musicBlogger:profile' username=result.name %}">{{ result.name }}</a></h3>
-                    <img src="{{ result.image }}">
-                    <p>{{ result.text }}</p>
-                </div>
-            {% empty %}
-                No results found.
-            {% endfor %}
-
-    </div>
-    
-        <h2>Blogs Results</h2>
-        <div id="results_blogs">
-            {% for result in results_blogs %}
+    <div id="results"><h2>Song Results</h2>
+        <div id="results_songs">
+            {% for result in results_songs %}
                 <div class="song">
-                    <h3>{{ result.name }}</h3>
+                    <h3><a href="{{ result.youtubeURL }}">{{ result.name }}</a></h3>
                     <img src="{{ result.image }}">
                     <p>{{ result.text }}</p>
                 </div>
             {% empty %}
                 No results found.
             {% endfor %}
-
-    </div>
+          </div>
+    
+        <h2>Profile Results</h2>
+            <div id="results_profiles">
+                {% for result in results_profiles %}
+                    <div class="profile">
+                        <h3><a href="{% url 'musicBlogger:profile' username=result.name %}">{{ result.name }}</a></h3>
+                        <img src="{{ result.image }}">
+                        <p>{{ result.text }}</p>
+                    </div>
+                {% empty %}
+                    No results found.
+                {% endfor %}
+    
+        </div>
+        
+            <h2>Blogs Results</h2>
+            <div id="results_blogs">
+                {% for result in results_blogs %}
+                    <div class="song">
+                        <h3>{{ result.name }}</h3>
+                        <img src="{{ result.image }}">
+                        <p>{{ result.text }}</p>
+                    </div>
+                {% empty %}
+                    No results found.
+                {% endfor %}
+    
+        </div>
+    
   </div>
 {% endblock %}
