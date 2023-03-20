@@ -46,7 +46,7 @@ class Blogs(models.Model):
     text = models.CharField(max_length=4096)
     postedBy = models.ForeignKey(UserProfile, on_delete = models.CASCADE)
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class Comments(models.Model):
