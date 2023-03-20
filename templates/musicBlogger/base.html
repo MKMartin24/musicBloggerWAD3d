@@ -21,7 +21,7 @@
         <div class='header-container'>
             {% block header %}
                 <a class='link-style' href="{% url 'musicBlogger:index' %}"><img class='artist-img-style-img-style' src="{% static 'images/musicBloggerLogo.png' %}" alt="Logo" /></a>
-                <a class='link-style' href="{% url 'musicBlogger:search_blogs' %}"><p class='small-text'>Search</p></a>
+                <a class='link-style' href="{% url 'musicBlogger:search' %}"><p class='small-text'>Search</p></a>
                 <a class='link-style' href="{% url 'musicBlogger:about' %}"><p class='small-text'>About</p></a>
                 <a class='link-style' href="{% url 'musicBlogger:contact_us' %}"><p class='small-text'>Contact Us</p></a>
                 {% if user.is_authenticated %}
