@@ -5,7 +5,6 @@ import django
 django.setup()
 from musicBlogger.models import *
 from django.contrib.auth.models import User
-from django.utils import timezone
 
 
 def populate():
@@ -85,9 +84,9 @@ def populate():
     for i in songs_list:
         add_song(i['name'], i['text'], i['spotifyURL'], i['youtubeURL'], i['description'], i['image'], i['genre'], i['madeBy'])
 
-    a = User.objects.get()
-    b = UserProfile.objects.get()
-    c = UserProfile.objects.get()
+    a = User.objects.get(username='Jay345')
+    b = UserProfile.objects.get(text='Normal person who love The weekend')
+    c = UserProfile.objects.get(text='The weekend is the best')
 
     n = Songs.objects.get(name='Blinding Light')
     p = Songs.objects.get(name='Paradise')
@@ -95,26 +94,32 @@ def populate():
 
     # s2 = Songs.objects.get(name='')
 
-    a.likedSong.add(n)
+    a.user_profile.likedSong.add(n)
     b.likedSong.add(p)
     c.likedSong.add(t)
     # a.likedSong.add(s, s2, s3)
-
-    art1 = Artist.objects.get(artistName='Coldplay')
-    art2 = Artist.objects.get(artistName='The weeknd')
-    art3 = Artist.objects.get(artistName='Linkin Park')
-    a.artist.add(art1, art2, art3)
-
-    a.user_profile.follows = [b.user_id]
-
-    # b.follows.add(a.id)
-    # c.follows.add(a.id, b.id)
 
     a.save()
     b.save()
     c.save()
 
-    a.user_profile.follows.append(c.id)
+    art1 = Artist.objects.get(artistName='Coldplay')
+    art2 = Artist.objects.get(artistName='The weeknd')
+    art3 = Artist.objects.get(artistName='Linkin Park')
+    a.user_profile.artist.add(art1, art2, art3)
+
+    a.save()
+
+    aa = UserProfile.objects.get(user=a)
+    print(b.user.id)
+    aa.follows = [b.user.id]
+
+    # b.follows.add(a.id)
+    # c.follows.add(a.id, b.id)
+    aa.follows.append(c.user.id)
+
+    print(aa.follows)
+    aa.save()
 
 
 
@@ -128,7 +133,7 @@ def add_user_profile(user, text, image_name):
 
 
 def add_user(user_name, password, email):
-    u = User.objects.get_or_create(username=user_name, email=email, last_login = timezone.now())[0]
+    u = User.objects.get_or_create(username=user_name, email=email)[0]
     u.set_password(password)
     u.save()
     return u

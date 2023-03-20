@@ -18,7 +18,7 @@ class Songs(models.Model):
     description = models.CharField(max_length=512)
     image = models.ImageField(upload_to='cover_images')
     genre = models.CharField(max_length=128)
-    madeBy = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    madeBy = models.ForeignKey(Artist, related_name='songs', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -28,13 +28,11 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name='user_profile', on_delete=models.CASCADE)
     text = models.CharField(max_length=1000)
     image = models.ImageField(upload_to='profile_images', blank=True)
-    likedSong = models.ManyToManyField(Songs, related_name='liked_song')
-    artist = models.ManyToManyField(Artist)
-    # follows = models.ManyToManyField('self')
-
+    likedSong = models.ManyToManyField(Songs, related_name='user_profile')
+    artist = models.ManyToManyField(Artist, related_name='user_profile')
     # list of follows_user's id
     # [2, 3, 4]
-    follows = models.JSONField()
+    follows = models.JSONField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.user.username)
@@ -49,7 +47,7 @@ class Blogs(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='blog_images', blank=True)
     text = models.CharField(max_length=4096)
-    postedBy = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    postedBy = models.ForeignKey(UserProfile, related_name='blogs', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -58,8 +56,8 @@ class Blogs(models.Model):
 class Comments(models.Model):
     content = models.CharField(max_length=1000)
     date = models.DateTimeField(auto_now_add=True)
-    blog = models.ForeignKey(Blogs, on_delete=models.CASCADE)
-    commentedBy = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blogs, related_name='comments', on_delete=models.CASCADE)
+    commentedBy = models.ForeignKey(UserProfile, related_name='comments', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.content
