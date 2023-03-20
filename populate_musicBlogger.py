@@ -11,45 +11,53 @@ from django.utils import timezone
 def populate():
 
     test_users = [
-        {'name': 'Jay345', 'email': 'jay345@gmail.com', 'password': 'Jay345123'},
-        {'name': 'Issac123', 'email': 'issac123@gmail.com', 'password': 'Issac123456'},
-        {'name': 'Henry678', 'email': 'henry678@gmail.com', 'password': 'henry6789'},
+        {'user_name': 'Jay345', 'email': 'jay345@gmail.com', 'password': 'Jay345123'},
+        {'user_name': 'Issac123', 'email': 'issac123@gmail.com', 'password': 'Issac123456'},
+        {'user_name': 'Henry678', 'email': 'henry678@gmail.com', 'password': 'henry6789'},
     ]
 
     for i in test_users:
-        add_user(i['name'], i['password'], i['email'])
+        add_user(i['user_name'], i['password'], i['email'])
 
     userprofile_list = [
-        {'name': User.objects.get(username='Jay345'), 'text': 'Normal person who love The weekend',
+        {'user': User.objects.get(username='Jay345'), 'text': 'Normal person who love The weekend',
          'image_name': 'userProfile1.jpg'},
-        {'name': User.objects.get(username='Issac123'), 'text': 'No.1 fans of The weekend',
+        {'user': User.objects.get(username='Issac123'), 'text': 'No.1 fans of The weekend',
          'image_name': 'userProfile1.jpg'},
-        {'name': User.objects.get(username='Henry678'), 'text': 'The weekend is the best',
+        {'user': User.objects.get(username='Henry678'), 'text': 'The weekend is the best',
          'image_name': 'userProfile1.jpg'},
     ]
 
     for i in userprofile_list:
-        add_user_profile(i['name'], i['text'], i['image_name'])
+        add_user_profile(i['user'], i['text'], i['image_name'])
 
     blogs_list = [
-        {'name': 'My favourite music in 2021', 'image': 'blogs1.jpg', 'text': 'No.1: Blinding light', 'post_by': UserProfile.objects.get(text='Normal person who love The weekend')},
-        {'name': 'My favourite music all the time', 'image': 'blogs2.jpg', 'text': "No.1: It's my life", 'post_by': UserProfile.objects.get(text='The weekend is the best')}
+        {'title': 'My favourite music in 2022', 'image': 'blogs1.jpg', 'text': 'No.1: Blinding light', 'post_by': UserProfile.objects.get(text='Normal person who love The weekend')},
+        {'title': 'My favourite music all the time', 'image': 'blogs2.jpg', 'text': "No.1: It's my life", 'post_by': UserProfile.objects.get(text='The weekend is the best')}
     ]
 
     for i in blogs_list:
-        add_blog(i['name'], i['image'], i['text'], i['post_by'])
+        add_blog(i['title'], i['image'], i['text'], i['post_by'])
 
     comments_list = [
-        {'content': 'When is the new album gonna release', 'blog': Blogs.objects.get(name='My favourite music in 2021'),
-         'commentBy': UserProfile.objects.get(name=User.objects.get(username='Jay345'))}
+        {'content': 'My best music is Paradise',
+         'blog': Blogs.objects.get(title='My favourite music all the time'),
+         'commentBy': UserProfile.objects.get(user=User.objects.get(username='Jay345'))},
+        {'content': 'My favourite music is Blinding light',
+         'blog': Blogs.objects.get(title='My favourite music in 2022'),
+         'commentBy': UserProfile.objects.get(user=User.objects.get(username='Issac123'))},
+        {'content': 'My top 1 music is papercut',
+         'blog': Blogs.objects.get(title='My favourite music all the time'),
+         'commentBy': UserProfile.objects.get(user=User.objects.get(username='Henry678'))}
     ]
 
     for i in comments_list:
         add_comment(i['content'], i['blog'], i['commentBy'])
 
     artist_list = [
-        {'artistName': 'The weeknd'},
+
         {'artistName': 'Linkin Park'},
+        {'artistName': 'The weeknd'},
         {'artistName': 'Coldplay'}
 
     ]
@@ -61,19 +69,35 @@ def populate():
         {'name': 'Paradise', 'text': 'Gold', 'spotifyURL': "https://open.spotify.com/search/Coldplay%20Para",
          'youtubeURL': "https://www.youtube.com/watch?v=1G4isv_Fylg&ab_channel=Coldplay",
          'description': '11 years ago, but still gold', 'image': 'song1.jpg', 'genre': 'pop music',
+         'madeBy': Artist.objects.get(artistName='Coldplay')},
+
+        {'name': 'Blinding Light', 'text': 'Gold', 'spotifyURL': "https://open.spotify.com/artist/1Xyo4u8uXC1ZmMpatF05PJ",
+         'youtubeURL': "https://www.youtube.com/watch?v=1G4isv_Fylg&ab_channel=Coldplay",
+         'description': '3 years ago, but still gold', 'image': 'song2.jpg', 'genre': 'pop music',
+         'madeBy': Artist.objects.get(artistName='Coldplay')},
+
+        {'name': 'Papercut', 'text': 'Gold', 'spotifyURL': "https://open.spotify.com/artist/6XyY86QOPPrYVGvF9ch6wz",
+         'youtubeURL': "https://www.youtube.com/watch?v=vjVkXlxsO8Q&ab_channel=LinkinPark",
+         'description': '16 years ago, but still gold', 'image': 'song3.jpg', 'genre': 'pop music',
          'madeBy': Artist.objects.get(artistName='Coldplay')}
     ]
 
     for i in songs_list:
         add_song(i['name'], i['text'], i['spotifyURL'], i['youtubeURL'], i['description'], i['image'], i['genre'], i['madeBy'])
 
-    a = UserProfile.objects.get(text='Normal person who love The weekend')
-    b = UserProfile.objects.get(text='No.1 fans of The weekend')
-    c = UserProfile.objects.get(text='The weekend is the best')
+    a = User.objects.get()
+    b = UserProfile.objects.get()
+    c = UserProfile.objects.get()
 
-    s = Songs.objects.get(name='Paradise')
+    n = Songs.objects.get(name='Blinding Light')
+    p = Songs.objects.get(name='Paradise')
+    t = Songs.objects.get(name='Papercut')
+
     # s2 = Songs.objects.get(name='')
-    a.likedSong.add(s)
+
+    a.likedSong.add(n)
+    b.likedSong.add(p)
+    c.likedSong.add(t)
     # a.likedSong.add(s, s2, s3)
 
     art1 = Artist.objects.get(artistName='Coldplay')
@@ -81,35 +105,37 @@ def populate():
     art3 = Artist.objects.get(artistName='Linkin Park')
     a.artist.add(art1, art2, art3)
 
-    a.follows.add(b)
-    b.follows.add(a)
-    c.follows.add(a, b)
+    a.user_profile.follows = [b.user_id]
+
+    # b.follows.add(a.id)
+    # c.follows.add(a.id, b.id)
 
     a.save()
     b.save()
     c.save()
 
+    a.user_profile.follows.append(c.id)
 
 
 
 
 
-def add_user_profile(name, text, image_name):
-    u = UserProfile.objects.get_or_create(name=name, text=text, image="/profile_images/"+image_name)[0]
+
+def add_user_profile(user, text, image_name):
+    u = UserProfile.objects.get_or_create(user=user, text=text, image="/profile_images/"+image_name)[0]
     u.save()
     return u
 
 
-
-def add_user(name, password, email):
-    u = User.objects.get_or_create(username=name, email=email, last_login = timezone.now())[0]
+def add_user(user_name, password, email):
+    u = User.objects.get_or_create(username=user_name, email=email, last_login = timezone.now())[0]
     u.set_password(password)
     u.save()
     return u
 
 
-def add_blog(name, image_name, text, postBy):
-    b = Blogs.objects.get_or_create(name=name, image='/blog_images/'+image_name, text=text, postedBy=postBy)[0]
+def add_blog(title, image_name, text, postBy):
+    b = Blogs.objects.get_or_create(title=title, image='/blog_images/'+image_name, text=text, postedBy=postBy)[0]
     b.save()
     return b
 
