@@ -50,7 +50,7 @@ class Blogs(models.Model):
     postedBy = models.ForeignKey(UserProfile, related_name='blogs', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class Comments(models.Model):
