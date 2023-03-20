@@ -172,5 +172,12 @@ def search(request):
     data_songs = serializers.serialize('json', results_songs)
     # data_profiles = serializers.serialize('json', results_profiles)
     # data_blogs = serializers.serialize('json', results_blogs)
-    return JsonResponse({'results_songs': data_songs}, safe=False)
+    return render(request, 'musicBlogger/search.html', {'results_songs': results_songs})
+    # return JsonResponse({'results_songs': data_songs}, safe=False)
     # return JsonResponse({'results_songs': data_songs, 'results_profiles': data_profiles, 'results_blogs': data_blogs}, safe=False)
+    
+
+def search_page(request):
+    results_songs = Songs.objects.all()
+    data_songs = serializers.serialize('json', results_songs)
+    return render(request, 'musicBlogger/search.html', {'results_songs': results_songs})

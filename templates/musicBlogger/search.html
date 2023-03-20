@@ -1,53 +1,26 @@
-<!-- {% extends 'musicBlogger/base.html' %}
-{% load staticfiles %}
-
-{% block title_block %}
-Search Blogs 
-{% endblock %}
-
-{% block sidebar %}
-{% if categories %}
-{%for category in categories %}
-<a href="{% url 'musicBlogger:category' category.slug %}">{{category.name}}</a>
-{% endfor %}
-{% else %}
-<p>Unable to find categories</p>
-{% endif %}
-{% endblock %}
-
-{% block body_block %}
-<a href="{% url 'musicBlogger:search_users' %}">Search Users</a>
-{% if blogs %}
-{% for blog in blogs %}
-    <img src="{{blog.image}}" alt="{{blog.title}} Picture"/>
-    <p> {{ blog.title }}</p>
-    <p> {{ blog.postedBy }}</p>
-{% endfor %}
-{% else %}
-<p>Unable to find any blogs</p>
-{% endif %}
-
-{% endblock %} -->
-
-
 {% extends 'musicBlogger/base.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
     <title>Search Results</title>
-    <script src="path/to/your/javascript/file.js"></script>
+    <script src="{% static 'musicBlogger/js/search.js' %}"></script>
 {% endblock %}
+
 {% block body_block %}
     <h1>Search</h1>
     <input type="text" id="search-input" placeholder="Search...">
     <button onclick="search()">Search</button>
     
     <h2>Song Results</h2>
-    <div id="cover_images"></div>
-    
-    <h2>User Profile Results</h2>
-    <div id="profile_images"></div>
-    
-    <h2>Blog Results</h2>
-    <div id="blog_images"></div>
+    <div id="results_songs">
+        {% for result in results_songs %}
+            <div class="song">
+                <h3>{{ result.name }}</h3>
+                <img src="{{ result.image }}">
+                <p>{{ result.text }}</p>
+            </div>
+        {% empty %}
+            No results found.
+        {% endfor %}
+    </div>
 {% endblock %}
