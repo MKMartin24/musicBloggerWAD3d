@@ -155,14 +155,14 @@ def write_blog(request):
 
 def profile(request, username):
     user = get_object_or_404(User, username=username)
-    profile = get_object_or_404(UserProfile, name=user)
+    profile = get_object_or_404(UserProfile, user=user)
     liked_song = profile.likedSong.all()
-    following = profile.follows.all()
-    followers = UserProfile.objects.filter(follows=profile)
+    following = User.objects.filter(id__in=profile.follows)
+    followers = UserProfile.objects.filter(follows=profile.user.id)
     blogs = Blogs.objects.filter(postedBy=profile)
-    num_followers = followers.count()
+    num_followers = following.count()
     num_following = followers.count()
-    context = {'profile': profile, "liked_song":liked_song, "following":following, "blogs":blogs, "num_followers":num_followers, "num_following":num_following}
+    context = {'profile': profile, "liked_song":liked_song,"following":following, "blogs":blogs, "num_followers":num_followers, "num_following":num_following}
     return render(request, 'musicBlogger/profile.html', context)
     
 
