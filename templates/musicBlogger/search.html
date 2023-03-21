@@ -22,7 +22,7 @@
                     {% endif %}
                     <p>{{ result.text }}</p>
                     {% if user.is_authenticated %}
-                        <button onclick="like('{{ user.username }}', '{{ result.id }}')", id="Like-'{{ result.id }}'">Like</button>
+                        <button onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Like</button>
                     {% endif %}
                 </div>
             {% empty %}
