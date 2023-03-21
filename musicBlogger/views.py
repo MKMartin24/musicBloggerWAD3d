@@ -246,14 +246,14 @@ def add_comment(request, blogname):
     return render(request, 'musicBlogger/add_comment.html', {'form': form})
 
 
-def like(request, username):
+def like(request):
     try:
         id = request.GET['id']
         username = request.GET['username']
         if len(id) > 0 and len(username)>0:
             current_user = get_object_or_404(User, username=username)
             current_userProfile = get_object_or_404(UserProfile, user=current_user)
-            song = get_object_or_404(UserProfile, id=id)
+            song = get_object_or_404(Songs, id=id)
             if current_userProfile.likedSong.filter(id=id).exists():
                 current_userProfile.likedSong.remove(song)
                 response_data = {'results': 0}
