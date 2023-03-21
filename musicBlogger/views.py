@@ -13,7 +13,7 @@ from django.core import serializers
 import json
 
 from musicBlogger.models import *
-from musicBlogger.forms import UserForm, UserProfileForm
+from musicBlogger.forms import UserForm, UserProfileForm, CommentForm
 
 
 # Create your views here.
@@ -151,7 +151,7 @@ def write_blog(request):
     return render(request, 'musicBlogger/writeBlog.html', context=context_dictionary)
 
 
-def profile(request, username):
+def profile(request, username, query = None):
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(UserProfile, user=user)
     liked_song = profile.likedSong.all()
@@ -174,7 +174,6 @@ def view_blog(request, blogname):
     return render(request, 'musicBlogger/viewBlog.html', context=context_dict)    
 
 def search_page(request, query=None):
-
     try:
         query = request.GET['query']
         if len(query) > 0:
@@ -200,4 +199,51 @@ def search_page(request, query=None):
         results_blogs = Blogs.objects.all()
         return render(request, 'musicBlogger/search.html', {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs})
    
+def follow(request, username):
+    try:
+        id = request.GET['id']
+        username = request.GET['username']
+        if len(id) > 0 and len(username)>0:
+            current_user = get_object_or_404(User, username=username)
+            current_userProfile = get_object_or_404(UserProfile, user=current_user)
+            if current_userProfile.follows is None:
+                current_userProfile.follows = [id]
+                current_userProfile.save()
+                print("here2")
+                response_data = {'results': 0}
+                return JsonResponse(response_data)
+            elif id not in current_userProfile.follows:
+                current_userProfile.follows.append(id)
+                current_userProfile.save()
+                print("here1")
+                response_data = {'results': 1}
+                return JsonResponse(response_data)
+            else:
+                current_userProfile.follows.remove(id)
+                current_userProfile.save()
+                print("here3")
+                response_data = {'results': 0}
+                return JsonResponse(response_data)
+    except KeyError:
+        response_data = {'results': 2}
+        return JsonResponse(response_data)
+    response_data = {'results': 2}
+    return JsonResponse(response_data)
+
     
+@login_required
+def add_comment(request, blogname):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.commentedBy = UserProfile.objects.get(user = request.user)
+            comment.blog = Blogs.objects.get(title=blogname)
+            comment.save()
+            blog_result = get_object_or_404(Blogs, title=blogname)
+            comments = Comments.objects.filter(blog=blog_result)
+            context_dict = {'blog':blog_result, 'comments':comments}
+            return render(request, 'musicBlogger/viewBlog.html', context=context_dict)
+    else:
+        form = CommentForm(initial={'blogname': blogname, 'user': request.user.username})
+    return render(request, 'musicBlogger/add_comment.html', {'form': form})
