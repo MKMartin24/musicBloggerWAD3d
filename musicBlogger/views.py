@@ -165,6 +165,9 @@ def profile(request, username, query = None):
     num_followers = following.count()
     num_following = followers.count()
     context = {'profile': profile, "liked_song":liked_song,"following":following, "blogs":blogs, "num_followers":num_followers, "num_following":num_following}
+    if request.user.is_authenticated:
+        login_user = get_object_or_404(UserProfile, user=request.user)
+        context['likedSongs'] = login_user.likedSong.all()
     return render(request, 'musicBlogger/profile.html', context)
 
 def view_blog(request, blogname):
@@ -176,6 +179,7 @@ def view_blog(request, blogname):
 def search_page(request, query=None):
     try:
         query = request.GET['query']
+
         if len(query) > 0:
             results_profiles = UserProfile.objects.filter(
             Q(name__username__icontains=query)
@@ -192,12 +196,21 @@ def search_page(request, query=None):
             results_songs = Songs.objects.all()
             results_profiles = UserProfile.objects.all()
             results_blogs = Blogs.objects.all()
-        return render(request, 'musicBlogger/search_results.html', {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs})
+            context_dict = {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs}
+            if request.user.is_authenticated:
+                login_user = get_object_or_404(UserProfile, user=request.user)
+                context_dict['likedSongs'] = login_user.likedSong.all()
+        return render(request, 'musicBlogger/search_results.html', context_dict)
     except KeyError:
         results_songs = Songs.objects.all()
         results_profiles = UserProfile.objects.all()
         results_blogs = Blogs.objects.all()
-        return render(request, 'musicBlogger/search.html', {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs})
+        context_dict = {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs}
+        if request.user.is_authenticated:
+            login_user = get_object_or_404(UserProfile, user=request.user)
+            context_dict['likedSongs'] = login_user.likedSong.all()
+        return render(request, 'musicBlogger/search.html', context_dict)
+
    
 def follow(request, username):
     try:
