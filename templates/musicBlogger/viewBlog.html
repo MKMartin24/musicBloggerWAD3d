@@ -11,4 +11,13 @@
 <p>{{blog.title}}</p>
 <p>{{blog.image}}</p>
 <p>{{blog.text}}</p>
+
+{% for result in results_songs %}
+<div class="comment">
+    <h3><a href="{% url 'musicBlogger:profile' username=result.commentedBy.username %}">{{ result.commentedBy.username }}</a></h3>
+    <p>{{ result.text }}</p>
+</div>
+{% empty %}
+    No Comments found.
+{% endfor %}
 {% endblock %}
