@@ -1,7 +1,6 @@
 function follow(username, id) {
     $.get(window.location.href+"follow", {"username": username, "id":id}, 
     function(data){
-        console.log(data.results)
         var button = $('#follow-button');
         if(data.results == 0){
             button.text('following');
