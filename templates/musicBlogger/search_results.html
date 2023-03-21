@@ -8,6 +8,9 @@
                         <img src="{{ result.image.url }}">
                     {% endif %}
                     <p>{{ result.text }}</p>
+                    {% if user.is_authenticated %}
+                        <button onclick="like('{{ user.username }}', '{{ result.id }}')", id="Like-'{{ result.id }}'">Like</button>
+                    {% endif %}
                 </div>
             {% empty %}
                 No results found.
