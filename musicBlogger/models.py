@@ -20,6 +20,9 @@ class Songs(models.Model):
     genre = models.CharField(max_length=128)
     madeBy = models.ForeignKey(Artist, related_name='songs', on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name_plural = "Songs"
+
     def __str__(self):
         return self.name
 
@@ -49,6 +52,9 @@ class Blogs(models.Model):
     text = models.CharField(max_length=4096)
     postedBy = models.ForeignKey(UserProfile, related_name='blogs', on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name_plural = "Blogs"
+
     def __str__(self):
         return self.title
 
@@ -58,6 +64,9 @@ class Comments(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     blog = models.ForeignKey(Blogs, related_name='comments', on_delete=models.CASCADE)
     commentedBy = models.ForeignKey(UserProfile, related_name='comments', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = "Comments"
 
     def __str__(self):
         return self.content
