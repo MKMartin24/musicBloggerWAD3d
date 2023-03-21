@@ -16,7 +16,9 @@
             {% for result in results_songs %}
                 <div class="song">
                     <h3><a href="{{ result.youtubeURL }}">{{ result.name }}</a></h3>
-                    <img src="{{ result.image.url }}">
+                    {% if result.image %}
+                        <img src="{{ result.image.url }}">
+                    {% endif %}
                     <p>{{ result.text }}</p>
                 </div>
             {% empty %}
@@ -29,7 +31,9 @@
                 {% for result in results_profiles %}
                 <div class="profile">
                     <h3><a href="{% url 'musicBlogger:profile' username=result.user %}">{{ result.user }}</a></h3>
-                    <img src="{{ result.image.url }}">
+                    {% if result.image %}
+                        <img src="{{ result.image.url }}">
+                    {% endif %}
                     <p>{{ result.text }}</p>
                 </div>
                 {% empty %}
@@ -43,7 +47,9 @@
                 {% for result in results_blogs %}
                     <div class="blogs">
                         <h3><a href="{% url 'musicBlogger:blog' blogname=result.title %}">{{ result.title }}</a></h3>
-                        <img src="{{ result.image.url }}">
+                        {% if result.image %}
+                            <img src="{{ result.image.url }}">
+                        {% endif %}
                         <p>{{ result.text }}</p>
                     </div>
                 {% empty %}
