@@ -25,7 +25,7 @@ Profile
                 <div class="track-list">
                     {% for result in liked_song %}
                         <div class="track-container"></div>
-                        <img src="{{ result.image }}" class="song-img">
+                        <img src="{{ result.image.url }}" class="song-img">
                         <div class="song-main-info">
                             <p class="song-title">{{result.name}}</p>
                             <p class="song-author-name">{{result.name.madeBy.name}}</p>
@@ -43,7 +43,7 @@ Profile
                 <div class="track-list">
                     {% for result in blogs %}
                         <div class="track-container"></div>
-                        <img src="{{ result.image }}" class="song-img">
+                        <img src="{{ result.image.url }}" class="song-img">
                         <div class="song-main-info">
                             <p class="song-title">{{result.name}}</p>
                         </div>
