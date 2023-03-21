@@ -26,6 +26,7 @@
                 <a class='header-link' href="{% url 'musicBlogger:contact_us' %}">Contact Us</a>
                 {% if user.is_authenticated %}
                 <a class='header-link' href="{% url 'musicBlogger:profile' username=user %}">User Profile</a>
+                <a class='header-link' href="{% url 'musicBlogger:write_blog' %}">Write Blog</a>
                 <a class='header-link' href="{% url 'musicBlogger:logout' %}">Logout</a>
                 {% else %}
                 <a class='header-link' href="{% url 'musicBlogger:login' %}">Login</a>
