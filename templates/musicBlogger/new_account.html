@@ -7,22 +7,30 @@ New account
 
 {% block body_block %}
     <div class="login-container">
-        <div class="login-items">
-            <p class="page-title">New account</p>
-            <form class="form-style" id="user_form" method="post" action="{% url 'musicBlogger:new_account' %}"
-                  enctype="multipart/form-data">
+        
+        {% if registered %}
+            <div class="signin-text-container"><h5 class="small-text">Thank you for registering! Please now go to Login to start using your account.</h5></div>
+        {% else %}
+            <div class="login-items">
+                <p class="page-title">New account</p>
+                <form class="form-style" id="user_form" method="post" action="{% url 'musicBlogger:new_account' %}"
+                    enctype="multipart/form-data">
 
-                  {%csrf_token %}
-                  <!-- Display each form -->
-                  {{ user_form.as_p }}
-                  {{ profile_form.as_p }}
-                
-                <input class="button-style" type="submit" value="create">
-            </form>
-            <div class="signin-text-container">
-                <h5 class="small-text">Have had an account already?</h5>
-                <a class="link-style" href="{% url 'musicBlogger:login' %}">Login</a>
+                    {%csrf_token %}
+                    <!-- Display each form -->
+                    {{ user_form.as_p }}
+                    {{ profile_form.as_p }}
+                    
+                    <input class="button-style" type="submit" value="create">
+                </form>
+                <div class="signin-text-container">
+                    <h5 class="small-text">Have had an account already?</h5>
+                    <a class="link-style" href="{% url 'musicBlogger:login' %}">Login</a>
+                    {% if error_message %}
+                    <h5 class="small-text">{{error_message}}</h5>
+                    {% endif %}
+                </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock %}

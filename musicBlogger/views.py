@@ -129,12 +129,12 @@ def new_account(request):
             user.save()
             profile = profile_form.save(commit=False)
             profile.user = user
-            profile.name = user
             if 'image' in request.FILES:
                 profile.picture = request.FILES['image']
             profile.save()
             registered = True
         else:
+            context_dict['error_message']= user_form.errors+"/n"+profile_form.errors
             print(user_form.errors, profile_form.errors)
     else:
         user_form = UserForm()
