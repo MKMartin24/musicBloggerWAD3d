@@ -104,9 +104,7 @@ def add_blog(request, blog_name_slug):
     return render(request, 'musicBlogger/add_blog.html', context=context_dict)
 
 
-def view_blog(request):
-    context_dict = {}
-    return render(request, 'musicBlogger/viewBlog.html', context=context_dict)
+
 
 
 def contact_us(request):
@@ -164,7 +162,12 @@ def profile(request, username):
     num_following = followers.count()
     context = {'profile': profile, "liked_song":liked_song,"following":following, "blogs":blogs, "num_followers":num_followers, "num_following":num_following}
     return render(request, 'musicBlogger/profile.html', context)
-    
+
+def view_blog(request, blogname):
+    blog_result = get_object_or_404(Blogs, title=blogname)
+    comments = Comments.objects.filter(blog=blog_result)
+    context_dict = {'blog':blog_result, 'comments':comments}
+    return render(request, 'musicBlogger/viewBlog.html', context=context_dict)    
 
 def search_page(request, query=None):
 
