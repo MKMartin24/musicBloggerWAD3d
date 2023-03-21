@@ -12,7 +12,7 @@ from django.db.models import Q
 from django.core import serializers
 import json
 
-from musicBlogger.models import UserProfile,Artist,Songs,Blogs,Comments,User
+from musicBlogger.models import *
 from musicBlogger.forms import UserForm, UserProfileForm
 
 
@@ -186,7 +186,7 @@ def search_page(request, query=None):
             results_songs = Songs.objects.all()
             results_profiles = UserProfile.objects.all()
             results_blogs = Blogs.objects.all()
-        return  render(request, 'musicBlogger/search_results.html', {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs})
+        return render(request, 'musicBlogger/search_results.html', {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs})
     except KeyError:
         results_songs = Songs.objects.all()
         results_profiles = UserProfile.objects.all()
