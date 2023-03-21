@@ -17,7 +17,7 @@ urlpatterns = [
     path('write_blog',views.write_blog,name='write_blog'),
     path('profile/<username>/', views.profile, name='profile'),
     path('profile', views.profile, name='profile'),
-    path('blog/<blogname>/', views.profile, name='blog'),
+    path('blog/<blogname>/', views.view_blog, name='blog'),
     path('blog', views.view_blog, name='blog'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -29,8 +29,8 @@
             <h2>Blogs Results</h2>
             <div id="results_blogs">
                 {% for result in results_blogs %}
-                    <div class="song">
-                        <h3>{{ result.title }}</h3>
+                    <div class="blogs">
+                        <h3><a href="{% url 'musicBlogger:blog' blogname=result.title %}">{{ result.title }}</a></h3>
                         <img src="{{ result.image }}">
                         <p>{{ result.text }}</p>
                     </div>
