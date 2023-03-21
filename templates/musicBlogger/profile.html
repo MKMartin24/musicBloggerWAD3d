@@ -3,7 +3,9 @@
 {% load static %}
 
 {% block title_block %}
-Profile
+<title>Profile</title>
+<script src="{% static 'javascript/follow.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 {% endblock %}
 
 
@@ -25,13 +27,13 @@ Profile
                 <div class="track-list">
                     {% for result in liked_song %}
                         <div class="track-container"></div>
-                        <img src="{{ result.image }}" class="song-img">
+                        <img src="{{ result.image.url }}" class="song-img">
                         <div class="song-main-info">
                             <p class="song-title">{{result.name}}</p>
                             <p class="song-author-name">{{result.name.madeBy.name}}</p>
                         </div>
                         <button class="play-btn-style">
-                            <a href="{{ result.youtubeURL }}"> <img src="{% static 'img/play-icon.png' %}">
+                            <a href="{{ result.youtubeURL }}"> <img src="{% static 'img/play-icon.png' %}"></a>
                         </button>
                         </div>
                     {% endfor %}
@@ -43,7 +45,7 @@ Profile
                 <div class="track-list">
                     {% for result in blogs %}
                         <div class="track-container"></div>
-                        <img src="{{ result.image }}" class="song-img">
+                        <img src="{{ result.image.url }}" class="song-img">
                         <div class="song-main-info">
                             <p class="song-title">{{result.name}}</p>
                         </div>
@@ -55,6 +57,11 @@ Profile
                 </div>
             </div>
             <div class="profile-follow">
+                {% if user.is_authenticated %}
+                    {% if user != profile.user %}
+                    <button onclick="follow('{{ user.username }}', '{{ profile.user.id }}')", id="follow-button">Follow</button>
+                    {% endif %}
+                {% endif %}
                 <div class="follow-info">
                     <div class="follow-text-item">
                         <h2 class="follow-number-text">{{num_followers}}</h2>

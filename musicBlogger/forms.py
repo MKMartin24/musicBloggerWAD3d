@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from musicBlogger.models import UserProfile
+from musicBlogger.models import UserProfile, Comments, Blogs
 
 
 class UserForm(forms.ModelForm):
@@ -25,3 +25,19 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('text', 'image')
 
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ['content']
+
+    def __init__(self, *args, **kwargs):
+        self.blogname = kwargs.pop('blogname')
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        comment = super().save(commit=False)
+        comment.commentedBy = UserProfile.objects.get(user=self.request.user)
+        comment.blog = Blogs.objects.get(name=self.blogname)
+        if commit:
+            comment.save()
+        return comment
