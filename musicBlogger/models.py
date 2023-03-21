@@ -29,7 +29,7 @@ class Songs(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name='user_profile', on_delete=models.CASCADE)
-    text = models.CharField(max_length=1000)
+    text = models.CharField(max_length=1000,default='')
     image = models.ImageField(upload_to='profile_images', blank=True)
     likedSong = models.ManyToManyField(Songs, related_name='user_profile')
     artist = models.ManyToManyField(Artist, related_name='user_profile')
@@ -46,10 +46,10 @@ class UserProfile(models.Model):
 
 
 class Blogs(models.Model):
-    title = models.CharField(max_length=128)
+    title = models.CharField(max_length=128,default='')
     date = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='blog_images', blank=True)
-    text = models.CharField(max_length=4096)
+    text = models.CharField(max_length=4096,default='')
     postedBy = models.ForeignKey(UserProfile, related_name='blogs', on_delete=models.CASCADE)
 
     class Meta:
@@ -60,7 +60,7 @@ class Blogs(models.Model):
 
 
 class Comments(models.Model):
-    content = models.CharField(max_length=1000)
+    content = models.CharField(max_length=1000,default='')
     date = models.DateTimeField(auto_now_add=True)
     blog = models.ForeignKey(Blogs, related_name='comments', on_delete=models.CASCADE)
     commentedBy = models.ForeignKey(UserProfile, related_name='comments', on_delete=models.CASCADE)
