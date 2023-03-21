@@ -155,7 +155,11 @@ def profile(request, username):
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(UserProfile, user=user)
     liked_song = profile.likedSong.all()
-    following = User.objects.filter(id__in=profile.follows)
+    following = None
+    if profile.follows:
+        following = User.objects.filter(id__in=profile.follows)
+    else:
+        following = User.objects.filter(id__in=[])
     followers = UserProfile.objects.filter(follows=profile.user.id)
     blogs = Blogs.objects.filter(postedBy=profile)
     num_followers = following.count()

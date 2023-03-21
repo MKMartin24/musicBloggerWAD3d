@@ -20,4 +20,4 @@ urlpatterns = [
     path('blog/<blogname>/', views.view_blog, name='blog'),
     path('blog', views.view_blog, name='blog'),
 
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
