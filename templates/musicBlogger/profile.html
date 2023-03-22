@@ -59,13 +59,10 @@ Profile
                 <div class="track-list">
                     {% for result in blogs %}
                         <div class="track-container"></div>
-                        <img src="{{ result.image.url }}" class="song-img">
+                        <a href="{% url 'musicBlogger:blog' slug=result.slug %}"><img src="{{ result.image.url }}" class="song-img"></a>
                         <div class="song-main-info">
-                            <p class="song-title">{{result.name}}</p>
+                            <a href="{% url 'musicBlogger:blog' slug=result.slug %}"><p class="blog-title">{{result.title}}</p></a>
                         </div>
-                        <button class="play-btn-style">
-                            <img src="{% static 'img/play-icon.png' %}">
-                        </button>
                         </div>
                     {% endfor %}
                 </div>

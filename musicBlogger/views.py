@@ -179,8 +179,8 @@ def profile(request, username, query = None):
         
     return render(request, 'musicBlogger/profile.html', context)
 
-def view_blog(request, blogname):
-    blog_result = get_object_or_404(Blogs, title=blogname)
+def view_blog(request, slug):
+    blog_result = get_object_or_404(Blogs, slug=slug)
     comments = Comments.objects.filter(blog=blog_result)
     context_dict = {'blog':blog_result, 'comments':comments}
     return render(request, 'musicBlogger/viewBlog.html', context=context_dict)    
