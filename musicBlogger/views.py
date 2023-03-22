@@ -144,10 +144,10 @@ def add_comment(request, slug):
             comment.blog = blog
             comment.save()
             blog_result = get_object_or_404(Blogs, slug=slug)
-            return redirect('blog', slug=slug)
+            return redirect('musicBlogger:blog', slug=slug)
     else:
         form = CommentForm()
-    return render(request, 'add_comment.html', {'blog': blog, 'form': form})
+    return render(request, 'musicBlogger/add_comment.html', {'blog': blog, 'form': form})
 
 
 @login_required
