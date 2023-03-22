@@ -61,70 +61,83 @@ class Chapter5ModelTests(TestCase):
     Are the models set up correctly, and do all the required attributes (post exercises) exist?
     """
     def setUp(self):
-        self.user = User.objects.create_user(
-            username='testuser',
-            email='testuser@test.com',
-            password='testpass'
+        self.user1 = User.objects.create_user(
+            username='user1',
+            email='user1@test.com',
+            password='user1'
         )
-        self.artist = Artist.objects.create(artistName='test artist')
+        self.user2 = User.objects.create_user(
+            username='user2',
+            email='user2@test.com',
+            password='user2'
+        )
+        self.artist = Artist.objects.create(artistName='artist')
         self.song = Songs.objects.create(
-            name='test song',
-            text='test song text',
+            name='song',
+            text='song text',
             spotifyURL='https://spotify.com/test',
             youtubeURL='https://youtube.com/test',
-            description='test song description',
-            image='test/image.png',
-            genre='test genre',
+            description='song description',
+            image='sing/image.png',
+            genre='song genre',
             madeBy=self.artist
         )
-        self.user_profile = UserProfile.objects.create(
-            name=self.user,
-            text='test user profile text'
+        self.user_profile1 = UserProfile.objects.create(
+            name=self.user1,
+            text='user1 profile text'
         )
+        self.user_profile2 = UserProfile.objects.create(
+            name=self.user2,
+            text='user1 profile text'
+        )
+        self.user_profile1.likedSong.add(self.song)
+        self.user_profile1.follows = [self.user2.id]
         self.blog = Blogs.objects.create(
-            name='test blog',
-            date='2022-01-01',
-            text='test blog text',
-            postedBy=self.user_profile
+            name='blog',
+            date='2002-10-01',
+            text='blog text',
+            postedBy=self.user_profile1
         )
         self.comment = Comments.objects.create(
-            content='test comment content',
-            date='2022-01-01',
+            content='comment content',
+            date='2002-10-10',
             blog=self.blog,
-            commentedBy=self.user_profile
+            commentedBy=self.user_profile1
         )
     
     def test_artist_creation(self):
-        artist = Artist.objects.get(artistName='test artist')
-        self.assertEqual(artist.artistName, 'test artist')
+        artist = Artist.objects.get(artistName='artist')
+        self.assertEqual(artist.artistName, 'artist')
 
     def test_song_creation(self):
-        song = Songs.objects.get(name='test song')
-        self.assertEqual(song.name, 'test song')
-        self.assertEqual(song.text, 'test song text')
+        song = Songs.objects.get(name='song')
+        self.assertEqual(song.name, 'song')
+        self.assertEqual(song.text, 'song text')
         self.assertEqual(song.spotifyURL, 'https://spotify.com/test')
         self.assertEqual(song.youtubeURL, 'https://youtube.com/test')
-        self.assertEqual(song.description, 'test song description')
-        self.assertEqual(song.image, 'test/image.png')
-        self.assertEqual(song.genre, 'test genre')
+        self.assertEqual(song.description, 'song description')
+        self.assertEqual(song.image, 'song/image.png')
+        self.assertEqual(song.genre, 'song genre')
         self.assertEqual(song.madeBy, self.artist)
 
     def test_user_profile_creation(self):
         user_profile = UserProfile.objects.get(name=self.user)
         self.assertEqual(user_profile.name, self.user)
-        self.assertEqual(user_profile.text, 'test user profile text')
+        self.assertEqual(user_profile.text, 'user1 profile text')
+        self.assertEqual(len(user_profile.follows), 1)
+        self.assertEqual(user_profile.likedSong.all()[0], self.song)
 
     def test_blog_creation(self):
-        blog = Blogs.objects.get(name='test blog')
-        self.assertEqual(blog.name, 'test blog')
+        blog = Blogs.objects.get(name='blog')
+        self.assertEqual(blog.title, 'blog')
         self.assertEqual(blog.date, '2022-01-01')
-        self.assertEqual(blog.text, 'test blog text')
-        self.assertEqual(blog.postedBy, self.user_profile)
+        self.assertEqual(blog.text, 'blog text')
+        self.assertEqual(blog.postedBy, self.user_profile1)
 
     def test_comment_creation(self):
-        comment_date_str = datetime.date(2022, 1, 1).strftime('%Y-%m-%d')
-        comment = Comments.objects.get(content='test comment content')
-        self.assertEqual(comment.content, 'test comment content')
+        comment_date_str = datetime.date(2002, 10, 10).strftime('%Y-%m-%d')
+        comment = Comments.objects.get(content='comment content')
+        self.assertEqual(comment.content, 'comment content')
         self.assertEqual(comment.date, comment_date_str)
         self.assertEqual(comment.blog, self.blog)
-        self.assertEqual(comment.commentedBy, self.user_profile)
+        self.assertEqual(comment.commentedBy, self.user_profile1)

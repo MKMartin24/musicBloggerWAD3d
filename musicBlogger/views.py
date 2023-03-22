@@ -164,10 +164,14 @@ def profile(request, username, query = None):
         following = User.objects.filter(id__in=profile.follows)
     else:
         following = User.objects.filter(id__in=[])
-    followers = UserProfile.objects.filter(follows=profile.user.id)
+    id = profile.user.id
+    not_followers = UserProfile.objects.exclude(follows__exact=[id])
+    allUsers = UserProfile.objects.all()
+
     blogs = Blogs.objects.filter(postedBy=profile)
-    num_followers = following.count()
-    num_following = followers.count()
+    num_following = following.count()
+    num_followers = allUsers.count()-not_followers.count()
+    following = UserProfile.objects.filter(user__in=following)
     context = {'profile': profile, "liked_song":liked_song,"following":following, "blogs":blogs, "num_followers":num_followers, "num_following":num_following}
     if request.user.is_authenticated:
         login_user = get_object_or_404(UserProfile, user=request.user)
@@ -209,7 +213,7 @@ def search_page(request, query=None):
         if request.user.is_authenticated:
             login_user = get_object_or_404(UserProfile, user=request.user)
             context_dict['likedSongs'] = login_user.likedSong.all()
-        print(results_songs,results_profiles,results_blogs)
+        print(context_dict, query)
         return render(request, 'musicBlogger/search_results.html', context_dict)
     except KeyError:
         results_songs = Songs.objects.all()
@@ -234,12 +238,12 @@ def follow(request, username):
         elif current_pageUser.id not in current_userProfile.follows:
             current_userProfile.follows.append(current_pageUser.id)
             current_userProfile.save()
-            response_data = {'results': 1}
+            response_data = {'results': 0}
             return JsonResponse(response_data)
         else:
             current_userProfile.follows.remove(current_pageUser.id)
             current_userProfile.save()
-            response_data = {'results': 0}
+            response_data = {'results': 1}
             return JsonResponse(response_data)
     except KeyError:
         response_data = {'results': 2}
