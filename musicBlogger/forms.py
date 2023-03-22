@@ -41,3 +41,23 @@ class CommentForm(forms.ModelForm):
         if commit:
             comment.save()
         return comment
+
+
+class BlogForm(forms.ModelForm):
+    #  text entry for users
+    title = forms.CharField(max_length=128, help_text="Please enter the title of the page.")
+    image = forms.ImageField(required=False, help_text="Upload a picture.")
+    text = forms.CharField(max_length=1000, help_text="Write here...")
+
+    class Meta:
+        model = Blogs
+        exclude = ('postedBy', 'date')
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        url = cleaned_data.get('url')
+
+        if url and not url.startswith('http://'):
+            url = f'http://{url}'
+            cleaned_data['url'] = url
+        return cleaned_data

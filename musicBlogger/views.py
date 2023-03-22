@@ -13,7 +13,7 @@ from django.core import serializers
 import json
 
 from musicBlogger.models import *
-from musicBlogger.forms import UserForm, UserProfileForm, CommentForm
+from musicBlogger.forms import UserForm, UserProfileForm, CommentForm, BlogForm
 
 
 # Create your views here.
@@ -104,9 +104,6 @@ def add_blog(request, blog_name_slug):
     return render(request, 'musicBlogger/add_blog.html', context=context_dict)
 
 
-
-
-
 def contact_us(request):
     context_dict = {}
     return render(request, 'musicBlogger/contact_us.html', context=context_dict)
@@ -144,8 +141,18 @@ def new_account(request):
 @login_required
 def write_blog(request):
     context_dictionary = {}
-    return render(request, 'musicBlogger/writeBlog.html', context=context_dictionary)
+    if not request.user.is_authenticated:
+        return HttpResponse("User not authenticated.")
 
+    if request.method == 'POST':
+        form = BlogForm(request.POST)
+        if form.is_valid():
+            blogs = form.save(commit=False)
+            blogs.postedBy = UserProfile.objects.get(user=request.user)
+            blogs.save()
+            return render(request, 'musicBlogger/writeBlog.html', context=context_dictionary)
+        else:
+            print(form.errors)
 
 def profile(request, username, query = None):
     user = get_object_or_404(User, username=username)
