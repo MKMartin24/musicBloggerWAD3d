@@ -109,10 +109,6 @@ def contact_us(request):
     return render(request, 'musicBlogger/contact_us.html', context=context_dict)
 
 
-def profile(request):
-    context_dict = {}
-    return render(request, 'musicBlogger/profile.html', context=context_dict)
-
 
 def new_account(request):
     context_dict = {}
@@ -174,6 +170,15 @@ def profile(request, username, query = None):
     num_followers = following.count()
     num_following = followers.count()
     context = {'profile': profile, "liked_song":liked_song,"following":following, "blogs":blogs, "num_followers":num_followers, "num_following":num_following}
+    if request.user.is_authenticated:
+        login_user = get_object_or_404(UserProfile, user=request.user)
+        context['likedSongs'] = login_user.likedSong.all()
+        context['alreadyFollowing'] = None
+        if login_user.follows:
+            if user.id in login_user.follows:
+                context['alreadyFollowing'] =  request.user
+            
+        
     return render(request, 'musicBlogger/profile.html', context)
 
 def view_blog(request, blogname):
@@ -185,6 +190,7 @@ def view_blog(request, blogname):
 def search_page(request, query=None):
     try:
         query = request.GET['query']
+
         if len(query) > 0:
             results_profiles = UserProfile.objects.filter(
             Q(name__username__icontains=query)
@@ -201,43 +207,44 @@ def search_page(request, query=None):
             results_songs = Songs.objects.all()
             results_profiles = UserProfile.objects.all()
             results_blogs = Blogs.objects.all()
-        return render(request, 'musicBlogger/search_results.html', {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs})
+            context_dict = {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs}
+            if request.user.is_authenticated:
+                login_user = get_object_or_404(UserProfile, user=request.user)
+                context_dict['likedSongs'] = login_user.likedSong.all()
+        return render(request, 'musicBlogger/search_results.html', context_dict)
     except KeyError:
         results_songs = Songs.objects.all()
         results_profiles = UserProfile.objects.all()
         results_blogs = Blogs.objects.all()
-        return render(request, 'musicBlogger/search.html', {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs})
+        context_dict = {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs}
+        if request.user.is_authenticated:
+            login_user = get_object_or_404(UserProfile, user=request.user)
+            context_dict['likedSongs'] = login_user.likedSong.all()
+        return render(request, 'musicBlogger/search.html', context_dict)
+
    
 def follow(request, username):
     try:
-        id = request.GET['id']
-        username = request.GET['username']
-        if len(id) > 0 and len(username)>0:
-            current_user = get_object_or_404(User, username=username)
-            current_userProfile = get_object_or_404(UserProfile, user=current_user)
-            if current_userProfile.follows is None:
-                current_userProfile.follows = [id]
-                current_userProfile.save()
-                print("here2")
-                response_data = {'results': 0}
-                return JsonResponse(response_data)
-            elif id not in current_userProfile.follows:
-                current_userProfile.follows.append(id)
-                current_userProfile.save()
-                print("here1")
-                response_data = {'results': 1}
-                return JsonResponse(response_data)
-            else:
-                current_userProfile.follows.remove(id)
-                current_userProfile.save()
-                print("here3")
-                response_data = {'results': 0}
-                return JsonResponse(response_data)
+        current_pageUser = get_object_or_404(User, username=username)
+        current_userProfile = get_object_or_404(UserProfile, user=request.user)
+        if current_userProfile.follows is None:
+            current_userProfile.follows = [current_pageUser.id]
+            current_userProfile.save()
+            response_data = {'results': 0}
+            return JsonResponse(response_data)
+        elif current_pageUser.id not in current_userProfile.follows:
+            current_userProfile.follows.append(current_pageUser.id)
+            current_userProfile.save()
+            response_data = {'results': 1}
+            return JsonResponse(response_data)
+        else:
+            current_userProfile.follows.remove(current_pageUser.id)
+            current_userProfile.save()
+            response_data = {'results': 0}
+            return JsonResponse(response_data)
     except KeyError:
         response_data = {'results': 2}
         return JsonResponse(response_data)
-    response_data = {'results': 2}
-    return JsonResponse(response_data)
 
     
 @login_required
@@ -256,3 +263,26 @@ def add_comment(request, blogname):
     else:
         form = CommentForm(initial={'blogname': blogname, 'user': request.user.username})
     return render(request, 'musicBlogger/add_comment.html', {'form': form})
+
+
+def like(request):
+    try:
+        id = request.GET['id']
+        username = request.GET['username']
+        if len(id) > 0 and len(username)>0:
+            current_user = get_object_or_404(User, username=username)
+            current_userProfile = get_object_or_404(UserProfile, user=current_user)
+            song = get_object_or_404(Songs, id=id)
+            if current_userProfile.likedSong.filter(id=id).exists():
+                current_userProfile.likedSong.remove(song)
+                response_data = {'results': 0}
+                return JsonResponse(response_data)
+            else:
+                current_userProfile.likedSong.add(song)
+                response_data = {'results': 1}
+                return JsonResponse(response_data)
+    except KeyError:
+        response_data = {'results': 2}
+        return JsonResponse(response_data)
+    response_data = {'results': 2}
+    return JsonResponse(response_data)

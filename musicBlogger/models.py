@@ -12,7 +12,7 @@ class Artist(models.Model):
 
 class Songs(models.Model):
     name = models.CharField(max_length=128, default="No-Name")
-    text = models.CharField(max_length=1000)
+    text = models.CharField(max_length=1000,default='')
     spotifyURL = models.CharField(max_length=128)
     youtubeURL = models.CharField(max_length=128)
     description = models.CharField(max_length=512)
