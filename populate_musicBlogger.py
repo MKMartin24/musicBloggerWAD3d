@@ -65,17 +65,17 @@ def populate():
         add_artist(i['artistName'])
 
     songs_list = [
-        {'name': 'Paradise', 'text': 'Gold', 'spotifyURL': "https://open.spotify.com/search/Coldplay%20Para",
+        {'name': 'Paradise', 'text': 'Best Coldplay song all the time', 'spotifyURL': "https://open.spotify.com/search/Coldplay%20Para",
          'youtubeURL': "https://www.youtube.com/watch?v=1G4isv_Fylg&ab_channel=Coldplay",
          'description': '11 years ago, but still gold', 'image': 'song1.jpg', 'genre': 'pop music',
          'madeBy': Artist.objects.get(artistName='Coldplay')},
 
-        {'name': 'Blinding Light', 'text': 'Gold', 'spotifyURL': "https://open.spotify.com/artist/1Xyo4u8uXC1ZmMpatF05PJ",
+        {'name': 'Blinding Light', 'text': 'Best The weeknd song all the time', 'spotifyURL': "https://open.spotify.com/artist/1Xyo4u8uXC1ZmMpatF05PJ",
          'youtubeURL': "https://www.youtube.com/watch?v=1G4isv_Fylg&ab_channel=Coldplay",
          'description': '3 years ago, but still gold', 'image': 'song2.jpg', 'genre': 'pop music',
          'madeBy': Artist.objects.get(artistName='Coldplay')},
 
-        {'name': 'Papercut', 'text': 'Gold', 'spotifyURL': "https://open.spotify.com/artist/6XyY86QOPPrYVGvF9ch6wz",
+        {'name': 'Papercut', 'text': 'Best Linkin Park song all the time', 'spotifyURL': "https://open.spotify.com/artist/6XyY86QOPPrYVGvF9ch6wz",
          'youtubeURL': "https://www.youtube.com/watch?v=vjVkXlxsO8Q&ab_channel=LinkinPark",
          'description': '16 years ago, but still gold', 'image': 'song3.jpg', 'genre': 'pop music',
          'madeBy': Artist.objects.get(artistName='Coldplay')}
