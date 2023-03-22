@@ -22,9 +22,9 @@ def populate():
         {'user': User.objects.get(username='Jay345'), 'text': 'Normal person who love The weekend',
          'image_name': 'userProfile1.jpg'},
         {'user': User.objects.get(username='Issac123'), 'text': 'No.1 fans of The weekend',
-         'image_name': 'userProfile1.jpg'},
+         'image_name': 'userProfile2.jpg'},
         {'user': User.objects.get(username='Henry678'), 'text': 'The weekend is the best',
-         'image_name': 'userProfile1.jpg'},
+         'image_name': 'userProfile3.jpg'},
     ]
 
     for i in userprofile_list:
