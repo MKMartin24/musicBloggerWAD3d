@@ -1,0 +1,70 @@
+@charset "UTF-8";
+@media (min-width: 1000px) {
+    .song,
+    .profile,
+    .blogs {
+        width: 30.33%;
+        float: left;
+        padding: 1%;
+        padding-bottom: 10px;
+    }
+  }
+  
+  @media (min-width: 600px) and (max-width: 999px) {
+    .song,
+    .profile,
+    .blogs {
+        width: 48%;
+        float: left;
+        padding: 1%;
+        padding-bottom: 10px;
+    }
+  }
+  
+  @media (max-width: 599px) {
+    .song,
+    .profile,
+    .blogs {
+      width: 98%;
+      float: none;
+      padding: 2%;
+      padding-bottom: 10px;
+    }
+  }
+  .song img,
+  .profile img,
+  .blogs img {
+    width: 100%;
+  }
+
+  .song img, .profile img, .blogs img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+    max-height: 100%;
+  }
+
+  #results_songs,
+  #results_profiles,
+  #results_blogs {
+    clear: both;
+  }
+  a {
+    color: black;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  button {
+    background-color: lightblue;
+    color: black;
+    border-radius: 10px;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    margin: 0 auto;
+  }
+  h2{
+    padding: 5px 15px;
+  }
+
