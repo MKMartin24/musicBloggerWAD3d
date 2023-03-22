@@ -38,13 +38,13 @@ def visitor_cookie_handler(request):
 
 def index(request):
     context_dict = {}
-    context_dict['message'] = "this is the index page"
+    newest_blogs = Blogs.objects.order_by('-date')
+    context_dict['newest_blogs'] = newest_blogs
     return render(request, 'musicBlogger/index.html', context=context_dict)
 
 
 def about(request):
     context_dict = {}
-    context_dict['message'] = "This is the about page"
     return render(request, 'musicBlogger/about.html', context=context_dict)
 
 
@@ -144,19 +144,21 @@ def new_account(request):
 
 @login_required
 def write_blog(request):
-    context_dictionary = {}
-    if not request.user.is_authenticated:
-        return HttpResponse("User not authenticated.")
-
+    context_dict = {}
     if request.method == 'POST':
         form = BlogForm(request.POST)
         if form.is_valid():
             blogs = form.save(commit=False)
             blogs.postedBy = UserProfile.objects.get(user=request.user)
             blogs.save()
-            return render(request, 'musicBlogger/writeBlog.html', context=context_dictionary)
+            return redirect('musicBlogger:profile', username=request.user.username)
         else:
             print(form.errors)
+    else:
+        form = BlogForm()
+
+    context_dict = {'form': form}
+    return render(request, 'musicBlogger/writeBlog.html', context=context_dict)
 
 def profile(request, username, query = None):
     user = get_object_or_404(User, username=username)
