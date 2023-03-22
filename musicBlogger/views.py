@@ -175,6 +175,7 @@ def profile(request, username, query = None):
     blogs = Blogs.objects.filter(postedBy=profile)
     num_following = following.count()
     num_followers = allUsers.count()-not_followers.count()
+    following = UserProfile.objects.filter(user__in=following)
     context = {'profile': profile, "liked_song":liked_song,"following":following, "blogs":blogs, "num_followers":num_followers, "num_following":num_following}
     if request.user.is_authenticated:
         login_user = get_object_or_404(UserProfile, user=request.user)

@@ -72,9 +72,7 @@ Profile
                         </div>
                     {% endfor %}
                 </div>
-                <div class="profile-categories-list">
-                    <button class="profile-categories-item">Written Blogs</button>
-                </div>
+                
                 <div class="track-list">
                     {% for result in blogs %}
                         <div class="track-container">
@@ -86,16 +84,19 @@ Profile
                     {% endfor %}
                 </div>
             </div>
-            
-                <div class="artists-info">
-                    <h3 class="artists-list-title">Followed Accounts</h3>
-                    <li class="similar-artists-list">
-                    {% for result in following %}
-                        <a href="{% url 'musicBlogger:profile' username=result.username %}"><img class="artist-arrow-style" src="{{result.image}}"></a>
-                    {% endfor %}
-                    </li>
+                <div class="profile-categories-list">
+                    <button class="profile-categories-item">Followed Accounts</button>
                 </div>
-            </div>
+                <div class="track-list">
+                    {% for result in following %}
+                    <div class="track-container">
+                        {% if result.image %}
+                            <a href="{% url 'musicBlogger:profile' username=result.user.username %}"><img class="artist-arrow-style" src="{{result.image.url}}"></a>
+                        {% endif %}
+                        <p class="track-title">{{result.user}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
         </div>
 
 {% endblock %}
