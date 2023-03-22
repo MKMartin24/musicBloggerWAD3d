@@ -62,9 +62,9 @@
                 <h2>Blogs Results</h2>
                 {% for result in results_blogs %}
                     <div class="blogs">
-                        <h3><a href="{% url 'musicBlogger:blog' blogname=result.title %}">{{ result.title }}</a></h3>
+                        <h3><a href="{% url 'musicBlogger:blog' slug=result.slug %}">{{ result.title }}</a></h3>
                         {% if result.image %}
-                            <a href="{% url 'musicBlogger:blog' blogname=result.title %}"><img src="{{ result.image.url }}"></a>
+                            <a href="{% url 'musicBlogger:blog' slug=result.slug %}"><img src="{{ result.image.url }}"></a>
                         {% endif %}
                         <p>{{ result.text }}</p>
                     </div>
