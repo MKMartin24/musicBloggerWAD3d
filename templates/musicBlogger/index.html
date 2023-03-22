@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block body_block %}
-    <!-- Header for about page-->
+    <!-- Header for home page-->
     <main>
         <div class="profile-container">
-            <h5 class='small-text'>Welcome {{ user.username }}!</h5><br />
-            <h5 class='small-text'>Here are the most recently posted blogs</h5><br />
+            <h5 class='about-text'>Welcome {{ user.username }}!</h5><br />
+            <h5 class='about-text'>Here are the most recently posted blogs</h5><br />
             {% if newestBlogs %}
             {% for blog in newest_blogs %}
             <a href="{% url 'musicBlogger:blog' blog.title %}" ><div class="profile-items">
@@ -29,7 +29,7 @@
             </a>
             {% endfor %}
             {% else %}
-            <h5 class='small-text'>Sorry, there are no blogs avaliable currently</h5>
+            <h5 class='about-text'>Sorry, there are no blogs avaliable currently</h5>
             {% endif %}
         </div>
     </main>
