@@ -112,10 +112,6 @@ def contact_us(request):
     return render(request, 'musicBlogger/contact_us.html', context=context_dict)
 
 
-def profile(request):
-    context_dict = {}
-    return render(request, 'musicBlogger/profile.html', context=context_dict)
-
 
 def new_account(request):
     context_dict = {}
@@ -168,6 +164,12 @@ def profile(request, username, query = None):
     if request.user.is_authenticated:
         login_user = get_object_or_404(UserProfile, user=request.user)
         context['likedSongs'] = login_user.likedSong.all()
+        context['alreadyFollowing'] = None
+        if login_user.follows:
+            if user.id in login_user.follows:
+                context['alreadyFollowing'] =  request.user
+            
+        
     return render(request, 'musicBlogger/profile.html', context)
 
 def view_blog(request, blogname):
@@ -214,31 +216,26 @@ def search_page(request, query=None):
    
 def follow(request, username):
     try:
-        id = request.GET['id']
-        username = request.GET['username']
-        if len(id) > 0 and len(username)>0:
-            current_user = get_object_or_404(User, username=username)
-            current_userProfile = get_object_or_404(UserProfile, user=current_user)
-            if current_userProfile.follows is None:
-                current_userProfile.follows = [id]
-                current_userProfile.save()
-                response_data = {'results': 0}
-                return JsonResponse(response_data)
-            elif id not in current_userProfile.follows:
-                current_userProfile.follows.append(id)
-                current_userProfile.save()
-                response_data = {'results': 1}
-                return JsonResponse(response_data)
-            else:
-                current_userProfile.follows.remove(id)
-                current_userProfile.save()
-                response_data = {'results': 0}
-                return JsonResponse(response_data)
+        current_pageUser = get_object_or_404(User, username=username)
+        current_userProfile = get_object_or_404(UserProfile, user=request.user)
+        if current_userProfile.follows is None:
+            current_userProfile.follows = [current_pageUser.id]
+            current_userProfile.save()
+            response_data = {'results': 0}
+            return JsonResponse(response_data)
+        elif current_pageUser.id not in current_userProfile.follows:
+            current_userProfile.follows.append(current_pageUser.id)
+            current_userProfile.save()
+            response_data = {'results': 1}
+            return JsonResponse(response_data)
+        else:
+            current_userProfile.follows.remove(current_pageUser.id)
+            current_userProfile.save()
+            response_data = {'results': 0}
+            return JsonResponse(response_data)
     except KeyError:
         response_data = {'results': 2}
         return JsonResponse(response_data)
-    response_data = {'results': 2}
-    return JsonResponse(response_data)
 
     
 @login_required

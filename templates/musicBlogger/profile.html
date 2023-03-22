@@ -67,7 +67,11 @@
             <div class="profile-follow">
                 {% if user.is_authenticated %}
                     {% if user != profile.user %}
-                    <button onclick="follow('{{ user.username }}', '{{ profile.user.id }}')", id="follow-button">Follow</button>
+                        {% if alreadyFollowing is not None %}
+                            <button onclick="follow('{{ profile.user.id }}')", id="follow-button">Follow</button>
+                        {% else %}
+                            <button onclick="follow('{{ profile.user.id }}')", id="follow-button">Following</button>
+                        {% endif %}
                     {% endif %}
                 {% endif %}
                 <div class="follow-info">
