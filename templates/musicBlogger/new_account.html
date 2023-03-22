@@ -1,5 +1,5 @@
 {% extends 'musicBlogger/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title_block %}
 New account
@@ -7,19 +7,30 @@ New account
 
 {% block body_block %}
     <div class="login-container">
-        <div class="login-items">
-            <p2 class="page-title">New account</p2>
-            <form class="form-style">
-                <input placeholder="Username" type="text" class="login-input-style" name="username">
-                <input placeholder="Email address or phone number" type="text" class="login-input-style" name="email">
-                <input placeholder="Password" type="password" class="login-input-style" name="password">
-                <input placeholder="Confirm password" type="password" class="login-input-style" name="comfirm-password">
-            </form>
-            <button class="button-style">Create</button>
-            <div class="signin-text-container">
-                <h5 class="small-text">Have had an account already?</h5>
-                <a class="link-style" href="/login.html">Login</a>
+        
+        {% if registered %}
+            <div class="signin-text-container"><h5 class="small-text">Thank you for registering! Please now go to Login to start using your account.</h5></div>
+        {% else %}
+            <div class="login-items">
+                <p class="page-title">New account</p>
+                <form class="form-style" id="user_form" method="post" action="{% url 'musicBlogger:new_account' %}"
+                    enctype="multipart/form-data">
+
+                    {%csrf_token %}
+                    <!-- Display each form -->
+                    {{ user_form.as_p }}
+                    {{ profile_form.as_p }}
+                    
+                    <input class="button-style" type="submit" value="create">
+                </form>
+                <div class="signin-text-container">
+                    <h5 class="small-text">Have had an account already?</h5>
+                    <a class="link-style" href="{% url 'musicBlogger:login' %}">Login</a>
+                    {% if error_message %}
+                    <h5 class="small-text">{{error_message}}</h5>
+                    {% endif %}
+                </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock %}

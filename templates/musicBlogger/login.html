@@ -1,5 +1,5 @@
 {% extends 'musicBlogger/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title_block %}
 Login
@@ -8,15 +8,16 @@ Login
 {% block body_block %}
     <div class="login-container">
         <div class="login-items">
-            <p2 class="page-title">Login</p2>
-            <form class="form-style">
-                <input placeholder="Email address or phone number" type="text" class="login-input-style" name="email">
+            <p class="page-title">Login</p>
+            <form class="form-style" id="login_form" method="post" action="{% url 'musicBlogger:login' %}">
+                {% csrf_token %}
+                <input placeholder="Username" type="text" class="login-input-style" name="username">
                 <input placeholder="Password" type="password" class="login-input-style" name="password">
+                <input class="button-style" type="submit" value = "login" />
             </form>
-            <button class="button-style">Login</button>
             <div class="signin-text-container">
                 <h5 class="small-text">Don’t have an  account yet?</h5>
-                <a class="link-style" href="/new_page.html">Sign up</a>
+                <a class="link-style" href="{% url 'musicBlogger:new_account' %}">Sign up</a>
             </div>
         </div>
     </div>

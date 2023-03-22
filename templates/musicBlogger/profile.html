@@ -1,104 +1,102 @@
+
 {% extends 'musicBlogger/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title_block %}
 Profile
 {% endblock %}
+{% block head_block %}
+<script src="{% static 'javascript/follow.js' %}"></script>
+<script src="{% static 'javascript/like.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
 
 {% block body_block %}
-    <div class="profile-container">
         <div class="profile-items">
             <div class="profile-info">
                 <div class="profile-title">
-                    <img class="profile-img-style" src="{% static 'img/profile-img.jpg' %}">
+                    {% if profile.image %}
+                    <img class="profile-img-style" src="{{ MEDIA_URL }}{{ profile.image }}" alt="image">
+                    {% endif %}
                     <div class="profile-text">
-                        <h2 class="name-text">Lana Del Rey</h2>
-                        <h3 class="location-text">New York, the USA</h3>
+                        <h2 class="name-text">{{profile.user.username}}</h2>
+                        <h3 class="location-text">{{profile.text}}</h3>
                     </div>
                 </div>
+                <div class="profile-follow">
+                    
+                    <div class="follow-info">
+                        <div class="follow-text-item">
+                            <h2 class="follow-number-text">{{num_followers}}</h2>
+                            <h4 class="follow-text">Followers</h4>
+                        </div>
+                        <div class="follow-text-item">
+                            <h2 class="follow-number-text">{{num_following}}</h2>
+                            <h4 class="follow-text">Following</h4>
+                        </div>
+                    {% if user.is_authenticated %}
+                        {% if user != profile.user %}
+                            {% if alreadyFollowing is None %}
+                                <button onclick="follow('{{ profile.user.id }}')", id="follow-button">Follow</button>
+                            {% else %}
+                                <button onclick="follow('{{ profile.user.id }}')", id="follow-button">Following</button>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                    </div>
+                </div>
+            </div>    
                 <div class="profile-categories-list">
-                    <button class="profile-categories-item">Tracks</button>
-                    <button class="profile-categories-item">Albums</button>
-                    <button class="profile-categories-item">Playlists</button>
-                    <button class="profile-categories-item">Liked songs</button>
+                    <h2 class="profile-categories-item">Liked songs</h2>
                 </div>
-                <hr class="category-divider">
                 <div class="track-list">
-                    <div class="track-container">
-                        <img src="{% static 'img/track-img.png' %}" class="song-img">
+                    {% for result in liked_song %}
+                        <div class="track-container">
+                        <img src="{{ result.image.url }}" class="song-img">
                         <div class="song-main-info">
-                            <p class="song-title">A&W</p>
-                            <p class="song-author-name">Lana Del Rey</p>
+                            <p class="song-title">{{result.name}}</p>
                         </div>
-                        <button class="like-icon-style"></button>
-                        <p class="song-time">7:13</p>
-                        <button class="play-btn-style"></button>
-                    </div>
-                    <div class="track-container">
-                        <img src="{% static 'img/track-img.png' %}" class="song-img">
-                        <div class="song-main-info">
-                            <p class="song-title">A&W</p>
-                            <p class="song-author-name">Lana Del Rey</p>
+                        <button class="play-btn-style">
+                            <a href="{{ result.youtubeURL }}"> <img src="{% static 'img/play-icon.png' %}"></a>
+                        </button>
+                        
+                        {% if user.is_authenticated %}
+                        {% if result in likedSongs %}
+                            <button class="song-like" onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Liked</button>
+                        {% else %}
+                            <button class="song-like" onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Like</button>
+                        {% endif %}
+                    {% endif %}
                         </div>
-                        <button class="like-icon-style"></button>
-                        <p class="song-time">7:13</p>
-                        <button class="play-btn-style"></button>
-                    </div>
-                    <div class="track-container">
-                        <img src="{% static 'img/track-img.png' %}" class="song-img">
-                        <div class="song-main-info">
-                            <p class="song-title">A&W</p>
-                            <p class="song-author-name">Lana Del Rey</p>
+                    {% endfor %}
+                </div>
+                
+                <div class="track-list">
+                    {% for result in blogs %}
+                        <div class="track-container">
+                        {% if result.image %}
+                        <a href="{% url 'musicBlogger:blog' slug=result.slug %}"><img src="{{ result.image.url }}" class="song-img"></a>
+                        {% endif %}
+                            <p class="blog-title">{{result.title}}</p>
                         </div>
-                        <button class="like-icon-style"></button>
-                        <p class="song-time">7:13</p>
-                        <button class="play-btn-style"></button>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
-            <div class="profile-follow">
-                <div class="follow-info">
-                    <div class="follow-text-item">
-                        <h2 class="follow-number-text">42K</h2>
-                        <h4 class="follow-text">Followers</h4>
-                    </div>
-                    <div class="follow-text-item">
-                        <h2 class="follow-number-text">100</h2>
-                        <h4 class="follow-text">Following</h4>
-                    </div>
-                    <div class="follow-text-item">
-                        <h2 class="follow-number-text">234</h2>
-                        <h4 class="follow-text">Tracks</h4>
-                    </div>
+                <div class="profile-categories-list">
+                    <button class="profile-categories-item">Followed Accounts</button>
                 </div>
-                <div class="artists-info">
-                    <h3 class="artists-list-title">Similar artists</h3>
-                    <li class="similar-artists-list">
-                        <img class="artist-arrow-style" src="{% static 'img/artists-arrow.png' %}">
-                        <img class="artist-img-style" src="{% static 'img/profile-img.jpg' %}">
-                        <img class="artist-img-style" src="{% static 'img/profile-img.jpg' %}">
-                        <img class="artist-img-style" src="{% static 'img/profile-img.jpg' %}">
-                        <img class="artist-right-arrow-style" src="{% static 'img/artists-arrow.png' %}">
-                    </li>
-                </div>
-                <div class="songs-history">
-                    <div class="song-history-options">
-                        <p class="song-history-title">Last played</p>
-                        <button class="song-history-all">See all</button>
+                <div class="track-list">
+                    {% for result in following %}
+                    <div class="track-container">
+                        {% if result.image %}
+                            <a href="{% url 'musicBlogger:profile' username=result.user.username %}"><img class="artist-arrow-style" src="{{result.image.url}}"></a>
+                        {% endif %}
+                        <p class="track-title">{{result.user}}</p>
                     </div>
-                    <hr class="divider">
-                    <div class="history-track-container">
-                        <img src="img/track-img.png" class="song-img">
-                        <div class="song-main-info">
-                            <p class="song-title">A&W</p>
-                            <p class="song-author-name">Lana Del Rey</p>
-                        </div>
-                        <button class="like-icon-style"></button>
-                        <p class="song-time">7:13</p>
-                        <button class="play-btn-style"></button>
-                    </div>
+                    {% endfor %}
                 </div>
-            </div>
         </div>
-    </div>
+
 {% endblock %}

@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 {% extends 'musicBlogger/base.html' %}
-{% load staticfiles %}
+{% load static %}
 <html lang="en">
 {% block title_block %}
-    <title>Homepage</title>
-    <meta charset="utf-8" name = "viewport" content ="width=device-width, initial-scale=1.0" /> 
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    Homepage
 {% endblock %}
 
 {% block body_block %}
-    <!-- Header for about page-->
+    <!-- Header for home page-->
     <main>
-        <h5 class="small-text">Artists you may like</h5>
         <div class="profile-container">
-            <div class="profile-items">
+            <h5 class='about-text'>Welcome {{ user.username }}!</h5><br />
+            <h5 class='about-text'>Here are the most recently posted blogs</h5><br />
+            {% if newestBlogs %}
+            {% for blog in newest_blogs %}
+            <a href="{% url 'musicBlogger:blog' blog.title %}" ><div class="profile-items">
                 <div class="profile-info">
                     <div class="profile-title">
-                        <img class="profile-img-style" src="{% static 'img/profile-img.jpg' %}">
+                        img_message ={{ blog.title }}+" picture"
+                        <img class="logo-img" src="{{ blog.image.url }}" alt=img_message>
                         <div class="profile-text">
-                            <h2 class="name-text">Lana Del Rey</h2>
-                            <h3 class="location-text">New York, USA</h3>
+                            <h2 class="name-text">{{ blog.title }}</h2>
+                            <h3 class="location-text">{{ blog.date }}</h3>
                         </div>
                     </div>
                 </div>
+            </div>
+            </a>
+            {% endfor %}
+            {% else %}
+            <h5 class='about-text'>Sorry, there are no blogs avaliable currently</h5>
+            {% endif %}
         </div>
     </main>
 {% endblock %}
