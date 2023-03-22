@@ -6,18 +6,23 @@
 {% endblock %}
 
 {% block body_block %}
-<p>{{blog.postedBy}}</p>
-<p>{{blog.date}}</p>
-<p>{{blog.title}}</p>
-<img src="{{ blog.image.url }}" alt="{{ blog.title }}">
-<p>{{blog.text}}</p>
-
+<div class='profile-container'>
+<a class='header-link' href="{% url 'musicBlogger:profile' blog.postedBy.user.username %}"><h5 class='about-text'>User: {{blog.postedBy}}</h5></a>
+<h5 class='about-text'>Posted on {{blog.date}}</h5>
+<h5 class='about-text'>Title: {{blog.title}}</h5>
+{% if blog.image %}
+<img class='logo-img' src="{{ blog.image.url }}" alt="{{ blog.title }}">
+{% endif %}
+<h5 class='about-text'>{{blog.text}}</h5>
+<br />
+<h5 class='about-text'>Comments:</h5>
 {% for result in results_songs %}
 <div class="comment">
-    <h3><a href="{% url 'musicBlogger:profile' username=result.commentedBy.username %}">{{ result.commentedBy.username }}</a></h3>
-    <p>{{ result.text }}</p>
+    <h3>{{ result.commentedBy.username }}</h3>
+    <p>{{ result.text }}<p>
 </div>
 {% empty %}
-    No Comments found.
+<h5 class='about-text'>No Comments Found</h5>
 {% endfor %}
+</div>
 {% endblock %}

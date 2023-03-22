@@ -99,10 +99,6 @@ def search_blogs(request):
     return render(request, 'musicBlogger/searchBlogs.html', context=context_dict)
 
 
-def add_blog(request, blog_name_slug):
-    context_dict = {}
-    return render(request, 'musicBlogger/add_blog.html', context=context_dict)
-
 
 def contact_us(request):
     context_dict = {}
@@ -265,7 +261,7 @@ def add_comment(request, blogname):
             return render(request, 'musicBlogger/viewBlog.html', context=context_dict)
     else:
         form = CommentForm(initial={'blogname': blogname, 'user': request.user.username})
-    return render(request, 'musicBlogger/add_comment.html', {'form': form})
+    return render(request, 'musicBlogger/add_comment.html', {'form': form,"blogname":blogname})
 
 
 def like(request):
