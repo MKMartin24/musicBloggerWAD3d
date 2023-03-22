@@ -4,6 +4,7 @@
 {% block title_block %}
     <title>Search Results</title>
     <script src="{% static 'javascript/search.js' %}"></script>
+    <script src="{% static 'javascript/like.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 {% endblock %}
 
@@ -20,6 +21,13 @@
                         <img src="{{ result.image.url }}">
                     {% endif %}
                     <p>{{ result.text }}</p>
+                    {% if user.is_authenticated %}
+                        {% if result in likedSongs %}
+                            <button onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Liked</button>
+                        {% else %}
+                            <button onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Like</button>
+                        {% endif %}
+                    {% endif %}
                 </div>
             {% empty %}
                 No results found.

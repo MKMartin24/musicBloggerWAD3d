@@ -5,6 +5,7 @@
 {% block title_block %}
 <title>Profile</title>
 <script src="{% static 'javascript/follow.js' %}"></script>
+<script src="{% static 'javascript/like.js' %}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 {% endblock %}
 
@@ -14,7 +15,7 @@
         <div class="profile-items">
             <div class="profile-info">
                 <div class="profile-title">
-                    <img class="profile-img-style" src="{{ profile.image }}">
+                    <img class="profile-img-style" src="{{ profile.image.url }}">
                     <div class="profile-text">
                         <h2 class="name-text">{{profile.user.username}}</h2>
                         <h3 class="location-text">{{profile.text}}</h3>
@@ -35,6 +36,13 @@
                         <button class="play-btn-style">
                             <a href="{{ result.youtubeURL }}"> <img src="{% static 'img/play-icon.png' %}"></a>
                         </button>
+                        {% if user.is_authenticated %}
+                        {% if result in likedSongs %}
+                            <button onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Liked</button>
+                        {% else %}
+                            <button onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Like</button>
+                        {% endif %}
+                    {% endif %}
                         </div>
                     {% endfor %}
                 </div>
@@ -59,7 +67,11 @@
             <div class="profile-follow">
                 {% if user.is_authenticated %}
                     {% if user != profile.user %}
-                    <button onclick="follow('{{ user.username }}', '{{ profile.user.id }}')", id="follow-button">Follow</button>
+                        {% if alreadyFollowing is not None %}
+                            <button onclick="follow('{{ profile.user.id }}')", id="follow-button">Follow</button>
+                        {% else %}
+                            <button onclick="follow('{{ profile.user.id }}')", id="follow-button">Following</button>
+                        {% endif %}
                     {% endif %}
                 {% endif %}
                 <div class="follow-info">
