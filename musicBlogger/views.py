@@ -133,6 +133,22 @@ def new_account(request):
 
     return render(request, 'musicBlogger/new_account.html', context=context_dict)
 
+@login_required
+def add_comment(request, slug):
+    blog = Blogs.objects.get(slug=slug)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.commentedBy = UserProfile.objects.get(user = request.user)
+            comment.blog = blog
+            comment.save()
+            blog_result = get_object_or_404(Blogs, slug=slug)
+            return redirect('blog', slug=slug)
+    else:
+        form = CommentForm()
+    return render(request, 'add_comment.html', {'blog': blog, 'form': form})
+
 
 @login_required
 def write_blog(request):
@@ -250,22 +266,7 @@ def follow(request, username):
         return JsonResponse(response_data)
 
     
-@login_required
-def add_comment(request, blogname):
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.commentedBy = UserProfile.objects.get(user = request.user)
-            comment.blog = Blogs.objects.get(title=blogname)
-            comment.save()
-            blog_result = get_object_or_404(Blogs, title=blogname)
-            comments = Comments.objects.filter(blog=blog_result)
-            context_dict = {'blog':blog_result, 'comments':comments}
-            return render(request, 'musicBlogger/viewBlog.html', context=context_dict)
-    else:
-        form = CommentForm(initial={'blogname': blogname, 'user': request.user.username})
-    return render(request, 'musicBlogger/add_comment.html', {'form': form,"blogname":blogname})
+
 
 
 def like(request):

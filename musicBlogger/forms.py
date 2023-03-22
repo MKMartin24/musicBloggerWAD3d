@@ -31,18 +31,26 @@ class CommentForm(forms.ModelForm):
         fields = ['content']
 
     def __init__(self, *args, **kwargs):
-        self.blogname = kwargs.pop('blogname')
-        super().__init__(*args, **kwargs)
+        super(CommentForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'login-input-style'
 
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        url = cleaned_data.get('url')
+
+        if url and not url.startswith('http://'):
+            url = f'http://{url}'
+            cleaned_data['url'] = url
+        return cleaned_data
+    
     def save(self, commit=True):
         comment = super().save(commit=False)
-        comment.commentedBy = UserProfile.objects.get(user=self.request.user)
-        comment.blog = Blogs.objects.get(name=self.blogname)
         if commit:
             comment.save()
         return comment
+    
+    
 
 
 class BlogForm(forms.ModelForm):
