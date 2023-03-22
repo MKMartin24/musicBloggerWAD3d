@@ -47,7 +47,7 @@
                 <div class="profile">
                     <h3><a href="{% url 'musicBlogger:profile' username=result.user %}">{{ result.user }}</a></h3>
                     {% if result.image %}
-                        <img src="{{ result.image.url }}">
+                        <a href="{% url 'musicBlogger:profile' username=result.user %}"><img src="{{ result.image.url }}"></a>
                     {% endif %}
                     <p>{{ result.text }}</p>
                 </div>
@@ -64,14 +64,13 @@
                     <div class="blogs">
                         <h3><a href="{% url 'musicBlogger:blog' blogname=result.title %}">{{ result.title }}</a></h3>
                         {% if result.image %}
-                            <img src="{{ result.image.url }}">
+                            <a href="{% url 'musicBlogger:blog' blogname=result.title %}"><img src="{{ result.image.url }}"></a>
                         {% endif %}
                         <p>{{ result.text }}</p>
                     </div>
                 {% empty %}
                     No results found.
                 {% endfor %}
-    
             </div>
     
   </div>
