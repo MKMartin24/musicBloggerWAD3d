@@ -144,16 +144,19 @@ def write_blog(request):
     if request.method == 'POST':
         form = BlogForm(request.POST)
         if form.is_valid():
-            blogs = form.save(commit=False)
-            blogs.postedBy = UserProfile.objects.get(user=request.user)
-            blogs.save()
-            return redirect('musicBlogger:profile', username=request.user.username)
+            blog = form.save(commit=False)
+            blog.postedBy = UserProfile.objects.get(user=request.user)
+            if 'image' in request.FILES:
+                blog.image = request.FILES['image']
+            blog.save()
+            return redirect('musicBlogger:index')
         else:
+            context_dict['error_message'] = form.errors
             print(form.errors)
     else:
         form = BlogForm()
 
-    context_dict = {'form': form}
+    context_dict['form'] = form
     return render(request, 'musicBlogger/writeBlog.html', context=context_dict)
 
 def profile(request, username, query = None):

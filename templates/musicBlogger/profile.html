@@ -55,7 +55,9 @@
                 <div class="track-list">
                     {% for result in blogs %}
                         <div class="track-container"></div>
+                        {% if result.image %}
                         <img src="{{ result.image.url }}" class="song-img">
+                        {% endif %}
                         <div class="song-main-info">
                             <p class="song-title">{{result.name}}</p>
                         </div>
