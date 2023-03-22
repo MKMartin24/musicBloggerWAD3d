@@ -33,6 +33,8 @@ class CommentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.blogname = kwargs.pop('blogname')
         super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'login-input-style'
 
     def save(self, commit=True):
         comment = super().save(commit=False)
@@ -45,13 +47,18 @@ class CommentForm(forms.ModelForm):
 
 class BlogForm(forms.ModelForm):
     #  text entry for users
-    title = forms.CharField(max_length=128, help_text="Please enter the title of the page.")
-    image = forms.ImageField(required=False, help_text="Upload a picture.")
-    text = forms.CharField(max_length=1000, help_text="Write here...")
+    # title = forms.CharField(max_length=128, help_text="Please enter the title of the page.")
+    # image = forms.ImageField(required=False, help_text="Upload a picture.")
+    # text = forms.CharField(max_length=1000, help_text="Write here...")
+
+    def __init__(self, *args, **kwargs):
+        super(BlogForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'login-input-style'
 
     class Meta:
         model = Blogs
-        exclude = ('postedBy', 'date')
+        fields = ['title','image','text']
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -61,3 +68,9 @@ class BlogForm(forms.ModelForm):
             url = f'http://{url}'
             cleaned_data['url'] = url
         return cleaned_data
+    
+    def save(self, commit=True):
+        blog = super().save(commit=False)
+        if commit:
+            blog.save()
+        return blog
