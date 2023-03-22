@@ -186,29 +186,29 @@ def view_blog(request, blogname):
     return render(request, 'musicBlogger/viewBlog.html', context=context_dict)    
 
 def search_page(request, query=None):
+    results_songs,results_profiles,results_blogs = None,None,None
     try:
         query = request.GET['query']
-
         if len(query) > 0:
             results_profiles = UserProfile.objects.filter(
-            Q(name__username__icontains=query)
+            Q(user__username__icontains=query)
             )
-            
             results_songs = Songs.objects.filter(
             Q(name__icontains=query)
             )
-            
             results_blogs = Blogs.objects.filter(
-            Q(name__icontains=query)
+            Q(title__icontains=query)
             )
         else:
             results_songs = Songs.objects.all()
             results_profiles = UserProfile.objects.all()
             results_blogs = Blogs.objects.all()
-            context_dict = {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs}
-            if request.user.is_authenticated:
-                login_user = get_object_or_404(UserProfile, user=request.user)
-                context_dict['likedSongs'] = login_user.likedSong.all()
+
+        context_dict = {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs}
+        if request.user.is_authenticated:
+            login_user = get_object_or_404(UserProfile, user=request.user)
+            context_dict['likedSongs'] = login_user.likedSong.all()
+        print(results_songs,results_profiles,results_blogs)
         return render(request, 'musicBlogger/search_results.html', context_dict)
     except KeyError:
         results_songs = Songs.objects.all()
