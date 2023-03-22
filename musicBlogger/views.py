@@ -38,13 +38,13 @@ def visitor_cookie_handler(request):
 
 def index(request):
     context_dict = {}
-    context_dict['message'] = "this is the index page"
+    newest_blogs = Blogs.objects.order_by('-date')
+    context_dict['newest_blogs'] = newest_blogs
     return render(request, 'musicBlogger/index.html', context=context_dict)
 
 
 def about(request):
     context_dict = {}
-    context_dict['message'] = "This is the about page"
     return render(request, 'musicBlogger/about.html', context=context_dict)
 
 
