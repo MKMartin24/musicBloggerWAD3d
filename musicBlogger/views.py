@@ -119,7 +119,7 @@ def new_account(request):
             profile = profile_form.save(commit=False)
             profile.user = user
             if 'image' in request.FILES:
-                profile.picture = request.FILES['image']
+                profile.image = request.FILES['image']
             profile.save()
             registered = True
         else:
