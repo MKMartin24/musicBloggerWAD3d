@@ -1,7 +1,7 @@
 import os
 import warnings
 import importlib
-import datetime
+from django.utils import timezone
 from .models import Artist, Songs, UserProfile, Blogs, Comments
 from django.urls import reverse
 from django.test import TestCase
@@ -56,7 +56,7 @@ class DatabaseConfigurationTests(TestCase):
                 warnings.warn("You don't appear to have a .gitignore file in place in your repository. We ask that you consider this! Read the Don't git push your Database paragraph in Chapter 5.")
 
 
-class Chapter5ModelTests(TestCase):
+class TestModels    (TestCase):
     """
     Are the models set up correctly, and do all the required attributes (post exercises) exist?
     """
@@ -83,17 +83,18 @@ class Chapter5ModelTests(TestCase):
             madeBy=self.artist
         )
         self.user_profile1 = UserProfile.objects.create(
-            name=self.user1,
+            user=self.user1,
             text='user1 profile text'
         )
         self.user_profile2 = UserProfile.objects.create(
-            name=self.user2,
+            user=self.user2,
             text='user1 profile text'
         )
         self.user_profile1.likedSong.add(self.song)
         self.user_profile1.follows = [self.user2.id]
+        self.user_profile1.save()
         self.blog = Blogs.objects.create(
-            name='blog',
+            title='blog',
             date='2002-10-01',
             text='blog text',
             postedBy=self.user_profile1
@@ -116,28 +117,27 @@ class Chapter5ModelTests(TestCase):
         self.assertEqual(song.spotifyURL, 'https://spotify.com/test')
         self.assertEqual(song.youtubeURL, 'https://youtube.com/test')
         self.assertEqual(song.description, 'song description')
-        self.assertEqual(song.image, 'song/image.png')
+        self.assertEqual(song.image, 'sing/image.png')
         self.assertEqual(song.genre, 'song genre')
         self.assertEqual(song.madeBy, self.artist)
 
     def test_user_profile_creation(self):
-        user_profile = UserProfile.objects.get(name=self.user)
-        self.assertEqual(user_profile.name, self.user)
+        user_profile = UserProfile.objects.get(user=self.user1)
+        self.assertEqual(user_profile.user, self.user1)
         self.assertEqual(user_profile.text, 'user1 profile text')
         self.assertEqual(len(user_profile.follows), 1)
         self.assertEqual(user_profile.likedSong.all()[0], self.song)
 
     def test_blog_creation(self):
-        blog = Blogs.objects.get(name='blog')
+        blog = Blogs.objects.get(title='blog')
         self.assertEqual(blog.title, 'blog')
-        self.assertEqual(blog.date, '2022-01-01')
+        self.assertEqual(blog.date.date(), timezone.now().date())
         self.assertEqual(blog.text, 'blog text')
         self.assertEqual(blog.postedBy, self.user_profile1)
 
     def test_comment_creation(self):
-        comment_date_str = datetime.date(2002, 10, 10).strftime('%Y-%m-%d')
         comment = Comments.objects.get(content='comment content')
         self.assertEqual(comment.content, 'comment content')
-        self.assertEqual(comment.date, comment_date_str)
+        self.assertEqual(comment.date.date(), timezone.now().date())
         self.assertEqual(comment.blog, self.blog)
         self.assertEqual(comment.commentedBy, self.user_profile1)
