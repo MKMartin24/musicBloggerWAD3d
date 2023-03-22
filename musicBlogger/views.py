@@ -213,7 +213,7 @@ def search_page(request, query=None):
         if request.user.is_authenticated:
             login_user = get_object_or_404(UserProfile, user=request.user)
             context_dict['likedSongs'] = login_user.likedSong.all()
-        print(results_songs,results_profiles,results_blogs)
+        print(context_dict, query)
         return render(request, 'musicBlogger/search_results.html', context_dict)
     except KeyError:
         results_songs = Songs.objects.all()
