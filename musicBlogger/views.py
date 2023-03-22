@@ -38,7 +38,7 @@ def visitor_cookie_handler(request):
 
 def index(request):
     context_dict = {}
-    newest_blogs = Blogs.objects.order_by('-date')
+    newest_blogs = Blogs.objects.order_by('-date')[:4]
     context_dict['newest_blogs'] = newest_blogs
     return render(request, 'musicBlogger/index.html', context=context_dict)
 
