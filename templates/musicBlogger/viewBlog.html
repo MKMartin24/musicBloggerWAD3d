@@ -2,27 +2,51 @@
 {% load static %}
 
 {% block title_block %}
+
+{% endblock %}
+
+{% extends 'musicBlogger/base.html' %}
+{% load static %}
+
+{% block title_block %}
 {{blog.title}}
 {% endblock %}
 
+{% block head_block %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+{% endblock %}
+
 {% block body_block %}
-<div class='profile-container'>
-<a class='header-link' href="{% url 'musicBlogger:profile' blog.postedBy.user.username %}"><h5 class='about-text'>User: {{blog.postedBy}}</h5></a>
-<h5 class='about-text'>Posted on {{blog.date}}</h5>
-<h5 class='about-text'>Title: {{blog.title}}</h5>
-{% if blog.image %}
-<img class='logo-img' src="{{ blog.image.url }}" alt="{{ blog.title }}">
-{% endif %}
-<h5 class='about-text'>{{blog.text}}</h5>
-<br />
-<h5 class='about-text'>Comments:</h5>
-{% for result in results_songs %}
-<div class="comment">
-    <h3>{{ result.commentedBy.username }}</h3>
-    <p>{{ result.text }}<p>
-</div>
-{% empty %}
-<h5 class='about-text'>No Comments Found</h5>
-{% endfor %}
-</div>
+<div class="container">
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        <div class="card my-4">
+          {% if blog.image %}
+          <img class="card-img-top" src="{{ blog.image.url }}" alt="{{ blog.title }}">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{blog.title}}</h5>
+            <p class="card-text">{{blog.text}}</p>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">Posted on {{blog.date}}</small>
+          </div>
+        </div>
+        <h5 class="my-4">Comments:</h5>
+        {% for result in results_songs %}
+        <div class="card mb-3">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">{{ result.commentedBy.username }}</h6>
+            <p class="card-text">{{ result.text }}</p>
+          </div>
+        </div>
+        {% empty %}
+        <h5>No Comments Found</h5>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 {% endblock %}
