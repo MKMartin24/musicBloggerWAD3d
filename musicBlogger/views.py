@@ -38,7 +38,7 @@ def visitor_cookie_handler(request):
 
 def index(request):
     context_dict = {}
-    newest_blogs = Blogs.objects.order_by('-date')
+    newest_blogs = Blogs.objects.order_by('-date')[:4]
     context_dict['newest_blogs'] = newest_blogs
     return render(request, 'musicBlogger/index.html', context=context_dict)
 
@@ -98,10 +98,6 @@ def search_blogs(request):
     context_dict = {}
     return render(request, 'musicBlogger/searchBlogs.html', context=context_dict)
 
-
-def add_blog(request, blog_name_slug):
-    context_dict = {}
-    return render(request, 'musicBlogger/add_blog.html', context=context_dict)
 
 
 def contact_us(request):
@@ -265,7 +261,7 @@ def add_comment(request, blogname):
             return render(request, 'musicBlogger/viewBlog.html', context=context_dict)
     else:
         form = CommentForm(initial={'blogname': blogname, 'user': request.user.username})
-    return render(request, 'musicBlogger/add_comment.html', {'form': form})
+    return render(request, 'musicBlogger/add_comment.html', {'form': form,"blogname":blogname})
 
 
 def like(request):

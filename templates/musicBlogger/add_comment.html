@@ -1,0 +1,26 @@
+{% extends 'musicBlogger/base.html' %}
+{% load static %}
+
+{% block title_block %}
+Write Comment
+{% endblock %}
+
+{% block body_block %}
+    <div class="login-container">
+        <div class="login-items">
+            <p class="page-title">What do you think of {{ blogname }}?</p>
+            <form class="form-style" id="write_blog_form" method="post" action="{% url 'musicBlogger:write_comment' %}" enctype='multipart/form-data'>
+                {% csrf_token %}
+                {{ form.as_p}}
+                <input class="button-style" type="submit" value="post" />
+            </form>
+            <div class="signin-text-container">
+                <h5 class="small-text">If you don't submit, your progress might not be saved</h5>
+             {% if error_message %}
+             <h5 class='small-text'>Errors:</h5><br />
+             <h5 class="small-text">{{ error_message }}</h5>
+             {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
