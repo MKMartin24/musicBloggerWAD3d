@@ -134,6 +134,7 @@ def new_account(request):
 
 @login_required
 def add_comment(request, slug):
+    context_dict = {}
     blog = Blogs.objects.get(slug=slug)
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -144,9 +145,13 @@ def add_comment(request, slug):
             comment.save()
             blog_result = get_object_or_404(Blogs, slug=slug)
             return redirect('musicBlogger:blog', slug=slug)
+        else:
+            context_dict['error_message'] = form.errors
     else:
         form = CommentForm()
-    return render(request, 'musicBlogger/add_comment.html', {'blog': blog, 'form': form})
+    context_dict['form'] = form
+    context_dict['blog'] = blog
+    return render(request, 'musicBlogger/add_comment.html', context=context_dict)
 
 
 @login_required
@@ -263,25 +268,6 @@ def follow(request, username):
     except KeyError:
         response_data = {'results': 2}
         return JsonResponse(response_data)
-
-    
-@login_required
-def add_comment(request, slug):
-    blog = Blogs.objects.get(slug=slug)
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.commentedBy = UserProfile.objects.get(user = request.user)
-            comment.blog = blog
-            comment.save()
-            blog_result = get_object_or_404(Blogs, slug=slug)
-            comments = Comments.objects.filter(blog=blog_result)
-            context_dict = {'blog':blog_result, 'comments':comments}
-            return render(request, 'musicBlogger/viewBlog.html', context=context_dict)
-    else:
-        form = CommentForm(initial={'blogname': blog.title, 'user': request.user.username})
-    return render(request, 'musicBlogger/add_comment.html', {'form': form,"blogname":blog.title})
 
 
 
