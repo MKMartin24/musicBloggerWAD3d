@@ -15,6 +15,7 @@
 {% endif %}
 <h5 class='about-text'>{{blog.text}}</h5>
 <br />
+<a href="{% url 'musicBlogger:add_comment' blog.slug %}">Add comment</a>
 <h5 class='about-text'>Comments:</h5>
 {% for result in results_songs %}
 <div class="comment">

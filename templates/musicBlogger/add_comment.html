@@ -9,7 +9,7 @@ Write Comment
     <div class="login-container">
         <div class="login-items">
             <p class="page-title">What do you think of {{ blogname }}?</p>
-            <form class="form-style" id="write_blog_form" method="post" action="{% url 'musicBlogger:write_comment' %}" enctype='multipart/form-data'>
+            <form class="form-style" id="write_blog_form" method="post" action="{% url 'musicBlogger:add_comment' blog.slug %}" enctype='multipart/form-data'>
                 {% csrf_token %}
                 {{ form.as_p}}
                 <input class="button-style" type="submit" value="post" />
