@@ -134,6 +134,7 @@ def new_account(request):
 
 @login_required
 def add_comment(request, slug):
+    context_dict = {}
     blog = Blogs.objects.get(slug=slug)
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -144,9 +145,13 @@ def add_comment(request, slug):
             comment.save()
             blog_result = get_object_or_404(Blogs, slug=slug)
             return redirect('musicBlogger:blog', slug=slug)
+        else:
+            context_dict['error_message'] = form.errors
     else:
         form = CommentForm()
-    return render(request, 'musicBlogger/add_comment.html', {'blog': blog, 'form': form})
+    context_dict['form'] = form
+    context_dict['blog'] = blog
+    return render(request, 'musicBlogger/add_comment.html', context=context_dict)
 
 
 @login_required
@@ -263,9 +268,6 @@ def follow(request, username):
     except KeyError:
         response_data = {'results': 2}
         return JsonResponse(response_data)
-
-    
-
 
 
 
