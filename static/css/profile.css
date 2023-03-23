@@ -1,0 +1,224 @@
+ .profile-img-style{
+    border-radius: 100px;
+    width: 180px;
+    height: 180px;
+    margin: 50px 0 0 100px;
+}
+
+.name-text{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 37px;
+    margin: 0;
+}
+
+
+
+.profile-items{
+    flex-flow: row wrap;
+}
+
+.profile-follow{
+    margin-left: 80px;
+}
+
+
+
+.profile-title{
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.profile-text{
+    margin: 90px 0 0 30px;
+}
+
+.profile-categories-list{
+    list-style-type: none;
+    margin: 50px 0 0 100px;
+    padding: 0;
+}
+
+.profile-categories-item{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 27px;
+    text-transform: capitalize;
+    display: inline;
+    border: 0;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.profile-categories-item:not(:last-child){
+    margin-right: 5%;
+}
+
+.profile-categories-item:hover{
+    font-size: 24px;
+}
+
+.profile-categories-item:active{
+    font-weight: 500;
+}
+
+.category-divider{
+    color: rgba(0, 0, 0, 0.5);
+    margin: 8px 0 16px 90px;
+    width: 520px;
+}
+#follow-button{
+    background-color: lightblue;
+    color: black;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    padding: 15px;
+
+}
+.follow-number-text{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 37px;
+    margin: 0;
+    margin-left: 20px;
+}
+
+.follow-text{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 300;
+    font-size: 26px;
+    line-height: 32px;
+    margin: 0;
+}
+
+.follow-info{
+    display: flex;
+    flex-flow: row wrap;
+    margin-top: 74px;
+}
+
+.follow-text-item:not(:last-child){
+    margin-right: 46px;
+}
+
+.artists-list-title{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    margin-top: 44px;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.artist-img-style{
+    width: 125px;
+    height: 120px;
+    border-radius: 10px;
+}
+
+.artist-img-style:not(:nth-last-child(2)){
+    margin-right: 14px;
+}
+
+.artist-arrow-style{
+    margin-bottom: 40px;
+    padding: 0;
+}
+
+.artist-right-arrow-style{
+    margin-bottom: 40px;
+    transform: rotate(180deg);
+} 
+
+ .similar-artists-list{
+    list-style-type: none;
+    margin: 16px 0 0 0;
+    text-align: center;
+}
+
+
+.play-btn-style{
+    width: 40px;
+    height: 40px;
+    margin-top: 10px;
+    margin-left: 50px;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0;
+    padding: 0;
+}
+
+.song-img{
+    border-radius: 10px;
+    width: 60px;
+    height: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+.song-title, .blog-title{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    margin: 0;
+}
+.song-like{
+    margin-top: 15px;
+    margin-left: 50px;
+    background-color: lightblue;
+    color: black;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+
+}
+
+
+.track-container img, follow-container {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+    max-height: 100%;
+  }
+
+.track-list,.follow-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+}
+
+
+@media screen and (min-width: 1000px) {
+    .track-container {
+        width: 21%;
+        padding: 1%;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .track-container {
+        width: 31%;
+        padding: 1%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .track-container {
+        width: 48%;
+        padding: 1%;
+    }
+}

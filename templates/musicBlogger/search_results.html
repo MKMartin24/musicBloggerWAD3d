@@ -1,12 +1,12 @@
 
-      
+    <div id="results">
         <div id="results_songs">
             <h2>Song Results</h2>
             {% for result in results_songs %}
                 <div class="song">
                     <h3><a href="{{ result.youtubeURL }}">{{ result.name }}</a></h3>
                     {% if result.image %}
-                        <a href="{{ result.youtubeURL }}"><img src="{{ result.image.url }}"></a>
+                    <a href="{{ result.youtubeURL }}"><img src="{{ result.image.url }}"></a>
                     {% endif %}
                     <p>{{ result.text }}</p>
                     {% if user.is_authenticated %}
@@ -29,7 +29,7 @@
                 <div class="profile">
                     <h3><a href="{% url 'musicBlogger:profile' username=result.user %}">{{ result.user }}</a></h3>
                     {% if result.image %}
-                        <img src="{{ result.image.url }}">
+                        <a href="{% url 'musicBlogger:profile' username=result.user %}"><img src="{{ result.image.url }}"></a>
                     {% endif %}
                     <p>{{ result.text }}</p>
                 </div>
@@ -39,19 +39,19 @@
     
         </div>
         
-        
-        <div id="results_blogs">
-            <h2>Blogs Results</h2>
-            {% for result in results_blogs %}
-                <div class="blogs">
-                    <h3><a href="{% url 'musicBlogger:blog' blogname=result.title %}">{{ result.title }}</a></h3>
-                    {% if result.image %}
-                        <img src="{{ result.image.url }}">
-                    {% endif %}
-                    <p>{{ result.text }}</p>
-                </div>
-            {% empty %}
-                No results found.
-            {% endfor %}
-    
+            
+            <div id="results_blogs">
+                <h2>Blogs Results</h2>
+                {% for result in results_blogs %}
+                    <div class="blogs">
+                        <h3><a href="{% url 'musicBlogger:blog' slug=result.slug %}">{{ result.title }}</a></h3>
+                        {% if result.image %}
+                            <a href="{% url 'musicBlogger:blog' slug=result.slug %}"><img src="{{ result.image.url }}"></a>
+                        {% endif %}
+                        <p>{{ result.text }}</p>
+                    </div>
+                {% empty %}
+                    No results found.
+                {% endfor %}
             </div>
+        </div>
