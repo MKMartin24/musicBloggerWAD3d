@@ -45,11 +45,14 @@ class UserProfile(models.Model):
         return self.user.username
 
 
+
+
 class Blogs(models.Model):
-    title = models.CharField(max_length=128,default='')
+    title = models.CharField(max_length=128, unique=True)
+    slug = models.SlugField(max_length=128, unique=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='blog_images', blank=True)
-    text = models.CharField(max_length=4096,default='')
+    text = models.CharField(max_length=4096, default='')
     postedBy = models.ForeignKey(UserProfile, related_name='blogs', on_delete=models.CASCADE)
 
     class Meta:
@@ -57,6 +60,11 @@ class Blogs(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super(Blogs, self).save(*args, **kwargs)
 
 
 class Comments(models.Model):
