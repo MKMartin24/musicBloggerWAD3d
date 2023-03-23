@@ -120,7 +120,7 @@ def new_account(request):
             profile = profile_form.save(commit=False)
             profile.user = user
             if 'image' in request.FILES:
-                profile.picture = request.FILES['image']
+                profile.image = request.FILES['image']
             profile.save()
             registered = True
         else:
@@ -129,10 +129,24 @@ def new_account(request):
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-
     context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
-
     return render(request, 'musicBlogger/new_account.html', context=context_dict)
+
+@login_required
+def add_comment(request, slug):
+    blog = Blogs.objects.get(slug=slug)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.commentedBy = UserProfile.objects.get(user = request.user)
+            comment.blog = blog
+            comment.save()
+            blog_result = get_object_or_404(Blogs, slug=slug)
+            return redirect('musicBlogger:blog', slug=slug)
+    else:
+        form = CommentForm()
+    return render(request, 'musicBlogger/add_comment.html', {'blog': blog, 'form': form})
 
 
 @login_required
@@ -159,16 +173,20 @@ def write_blog(request):
 def profile(request, username, query = None):
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(UserProfile, user=user)
-    liked_song = profile.likedSong.all()
+    liked_song = profile.likedSong.all()[:12]
     following = None
     if profile.follows:
         following = User.objects.filter(id__in=profile.follows)
     else:
         following = User.objects.filter(id__in=[])
-    followers = UserProfile.objects.filter(follows=profile.user.id)
-    blogs = Blogs.objects.filter(postedBy=profile)
-    num_followers = following.count()
-    num_following = followers.count()
+    id = profile.user.id
+    not_followers = UserProfile.objects.exclude(follows__exact=[id])
+    allUsers = UserProfile.objects.all()
+
+    blogs = Blogs.objects.filter(postedBy=profile)[:12]
+    num_following = following.count()
+    num_followers = allUsers.count()-not_followers.count()
+    following = UserProfile.objects.filter(user__in=following)[:12]
     context = {'profile': profile, "liked_song":liked_song,"following":following, "blogs":blogs, "num_followers":num_followers, "num_following":num_following}
     if request.user.is_authenticated:
         login_user = get_object_or_404(UserProfile, user=request.user)
@@ -194,28 +212,28 @@ def search_page(request, query=None):
         if len(query) > 0:
             results_profiles = UserProfile.objects.filter(
             Q(user__username__icontains=query)
-            )
+            )[:12]
             results_songs = Songs.objects.filter(
             Q(name__icontains=query)
-            )
+            )[:12]
             results_blogs = Blogs.objects.filter(
             Q(title__icontains=query)
-            )
+            )[:12]
         else:
-            results_songs = Songs.objects.all()
-            results_profiles = UserProfile.objects.all()
-            results_blogs = Blogs.objects.all()
+            results_songs = Songs.objects.all()[:12]
+            results_profiles = UserProfile.objects.all()[:12]
+            results_blogs = Blogs.objects.all()[:12]
 
         context_dict = {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs}
         if request.user.is_authenticated:
             login_user = get_object_or_404(UserProfile, user=request.user)
             context_dict['likedSongs'] = login_user.likedSong.all()
-        print(results_songs,results_profiles,results_blogs)
+        print(context_dict, query)
         return render(request, 'musicBlogger/search_results.html', context_dict)
     except KeyError:
-        results_songs = Songs.objects.all()
-        results_profiles = UserProfile.objects.all()
-        results_blogs = Blogs.objects.all()
+        results_songs = Songs.objects.all()[:12]
+        results_profiles = UserProfile.objects.all()[:12]
+        results_blogs = Blogs.objects.all()[:12]
         context_dict = {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs}
         if request.user.is_authenticated:
             login_user = get_object_or_404(UserProfile, user=request.user)
@@ -235,12 +253,12 @@ def follow(request, username):
         elif current_pageUser.id not in current_userProfile.follows:
             current_userProfile.follows.append(current_pageUser.id)
             current_userProfile.save()
-            response_data = {'results': 1}
+            response_data = {'results': 0}
             return JsonResponse(response_data)
         else:
             current_userProfile.follows.remove(current_pageUser.id)
             current_userProfile.save()
-            response_data = {'results': 0}
+            response_data = {'results': 1}
             return JsonResponse(response_data)
     except KeyError:
         response_data = {'results': 2}
@@ -264,6 +282,7 @@ def add_comment(request, slug):
     else:
         form = CommentForm(initial={'blogname': blog.title, 'user': request.user.username})
     return render(request, 'musicBlogger/add_comment.html', {'form': form,"blogname":blog.title})
+
 
 
 def like(request):

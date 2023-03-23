@@ -13,95 +13,90 @@ Profile
 {% endblock %}
 
 
-
-
-
 {% block body_block %}
-    <div class="profile-container">
         <div class="profile-items">
             <div class="profile-info">
                 <div class="profile-title">
                     {% if profile.image %}
-                    <img class="profile-img-style" src="{{ profile.image.url }}">
+                    <img class="profile-img-style" src="{{ MEDIA_URL }}{{ profile.image }}" alt="image">
                     {% endif %}
                     <div class="profile-text">
                         <h2 class="name-text">{{profile.user.username}}</h2>
                         <h3 class="location-text">{{profile.text}}</h3>
                     </div>
                 </div>
-                <div class="profile-categories-list">
-                    <button class="profile-categories-item">Liked songs</button>
+                <div class="profile-follow">
+                    
+                    <div class="follow-info">
+                        <div class="follow-text-item">
+                            <h2 class="follow-number-text">{{num_followers}}</h2>
+                            <h4 class="follow-text">Followers</h4>
+                        </div>
+                        <div class="follow-text-item">
+                            <h2 class="follow-number-text">{{num_following}}</h2>
+                            <h4 class="follow-text">Following</h4>
+                        </div>
+                    {% if user.is_authenticated %}
+                        {% if user != profile.user %}
+                            {% if alreadyFollowing is None %}
+                                <button onclick="follow('{{ profile.user.id }}')", id="follow-button">Follow</button>
+                            {% else %}
+                                <button onclick="follow('{{ profile.user.id }}')", id="follow-button">Following</button>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                    </div>
                 </div>
-                <hr class="category-divider">
+            </div>    
+                <div class="profile-categories-list">
+                    <h2 class="profile-categories-item">Liked songs</h2>
+                </div>
                 <div class="track-list">
                     {% for result in liked_song %}
-                        <div class="track-container"></div>
+                        <div class="track-container">
                         <img src="{{ result.image.url }}" class="song-img">
                         <div class="song-main-info">
                             <p class="song-title">{{result.name}}</p>
-                            <p class="song-author-name">{{result.name.madeBy.name}}</p>
                         </div>
                         <button class="play-btn-style">
                             <a href="{{ result.youtubeURL }}"> <img src="{% static 'img/play-icon.png' %}"></a>
                         </button>
+                        
                         {% if user.is_authenticated %}
                         {% if result in likedSongs %}
-                            <button onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Liked</button>
+                            <button class="song-like" onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Liked</button>
                         {% else %}
-                            <button onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Like</button>
+                            <button class="song-like" onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Like</button>
                         {% endif %}
                     {% endif %}
                         </div>
                     {% endfor %}
                 </div>
-                <div class="profile-categories-list">
-                    <button class="profile-categories-item">Written Blogs</button>
-                </div>
-                <hr class="category-divider">
+                
                 <div class="track-list">
                     {% for result in blogs %}
-                        <div class="track-container"></div>
+                        <div class="track-container">
                         {% if result.image %}
                         <a href="{% url 'musicBlogger:blog' slug=result.slug %}"><img src="{{ result.image.url }}" class="song-img"></a>
                         {% endif %}
-                        <div class="song-main-info">
-                            <a href="{% url 'musicBlogger:blog' slug=result.slug %}"><p class="blog-title">{{result.title}}</p></a>
-                        </div>
+                            <p class="blog-title">{{result.title}}</p>
                         </div>
                     {% endfor %}
                 </div>
             </div>
-            <div class="profile-follow">
-                {% if user.is_authenticated %}
-                    {% if user != profile.user %}
-                        {% if alreadyFollowing is not None %}
-                            <button onclick="follow('{{ profile.user.id }}')", id="follow-button">Follow</button>
-                        {% else %}
-                            <button onclick="follow('{{ profile.user.id }}')", id="follow-button">Following</button>
-                        {% endif %}
-                    {% endif %}
-                {% endif %}
-                <div class="follow-info">
-                    <div class="follow-text-item">
-                        <h2 class="follow-number-text">{{num_followers}}</h2>
-                        <h4 class="follow-text">Followers</h4>
-                    </div>
-                    <div class="follow-text-item">
-                        <h2 class="follow-number-text">{{num_following}}</h2>
-                        <h4 class="follow-text">Following</h4>
-                    </div>
+                <div class="profile-categories-list">
+                    <button class="profile-categories-item">Followed Accounts</button>
                 </div>
-                <div class="artists-info">
-                    
-                    <h3 class="artists-list-title">Followed Accounts</h3>
-                    <li class="similar-artists-list">
+                <div class="track-list">
                     {% for result in following %}
-                        <a href="{% url 'musicBlogger:profile' username=result.username %}"><img class="artist-arrow-style" src="{{result.image}}"></a>
+                    <div class="track-container">
+                        {% if result.image %}
+                            <a href="{% url 'musicBlogger:profile' username=result.user.username %}"><img class="artist-arrow-style" src="{{result.image.url}}"></a>
+                        {% endif %}
+                        <p class="track-title">{{result.user}}</p>
+                    </div>
                     {% endfor %}
-                    </li>
                 </div>
-            </div>
         </div>
-    </div>
 
 {% endblock %}

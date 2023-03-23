@@ -20,4 +20,5 @@ urlpatterns = [
     path('blog/<slug:slug>/', views.view_blog, name='blog'),
     path('blog/<slug:slug>/add_comment/', views.add_comment, name='add_comment'),
     path('like/', views.like, name='like'),
+
 ]
