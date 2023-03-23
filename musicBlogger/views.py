@@ -128,9 +128,7 @@ def new_account(request):
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-
     context_dict = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered}
-
     return render(request, 'musicBlogger/new_account.html', context=context_dict)
 
 @login_required

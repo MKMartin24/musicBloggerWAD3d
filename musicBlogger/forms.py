@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from musicBlogger.models import UserProfile, Comments, Blogs
-
+import re
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -10,6 +10,14 @@ class UserForm(forms.ModelForm):
         super(UserForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'login-input-style'
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        pattern = r'^[a-zA-Z0-9_-]+$' # Only allow letters, numbers, underscores and hyphens
+        if not re.match(pattern, username):
+            raise forms.ValidationError('Username must only contain letters, numbers, underscores and hyphens.')
+        return username
+    
     class Meta:
         model = User
         fields = ('username', 'email', 'password',)
