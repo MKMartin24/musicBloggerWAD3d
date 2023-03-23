@@ -174,7 +174,7 @@ def write_blog(request):
 def profile(request, username, query = None):
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(UserProfile, user=user)
-    liked_song = profile.likedSong.all()
+    liked_song = profile.likedSong.all()[:12]
     following = None
     if profile.follows:
         following = User.objects.filter(id__in=profile.follows)
@@ -184,10 +184,10 @@ def profile(request, username, query = None):
     not_followers = UserProfile.objects.exclude(follows__exact=[id])
     allUsers = UserProfile.objects.all()
 
-    blogs = Blogs.objects.filter(postedBy=profile)
+    blogs = Blogs.objects.filter(postedBy=profile)[:12]
     num_following = following.count()
     num_followers = allUsers.count()-not_followers.count()
-    following = UserProfile.objects.filter(user__in=following)
+    following = UserProfile.objects.filter(user__in=following)[:12]
     context = {'profile': profile, "liked_song":liked_song,"following":following, "blogs":blogs, "num_followers":num_followers, "num_following":num_following}
     if request.user.is_authenticated:
         login_user = get_object_or_404(UserProfile, user=request.user)
@@ -213,17 +213,17 @@ def search_page(request, query=None):
         if len(query) > 0:
             results_profiles = UserProfile.objects.filter(
             Q(user__username__icontains=query)
-            )
+            )[:12]
             results_songs = Songs.objects.filter(
             Q(name__icontains=query)
-            )
+            )[:12]
             results_blogs = Blogs.objects.filter(
             Q(title__icontains=query)
-            )
+            )[:12]
         else:
-            results_songs = Songs.objects.all()
-            results_profiles = UserProfile.objects.all()
-            results_blogs = Blogs.objects.all()
+            results_songs = Songs.objects.all()[:12]
+            results_profiles = UserProfile.objects.all()[:12]
+            results_blogs = Blogs.objects.all()[:12]
 
         context_dict = {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs}
         if request.user.is_authenticated:
@@ -232,9 +232,9 @@ def search_page(request, query=None):
         print(context_dict, query)
         return render(request, 'musicBlogger/search_results.html', context_dict)
     except KeyError:
-        results_songs = Songs.objects.all()
-        results_profiles = UserProfile.objects.all()
-        results_blogs = Blogs.objects.all()
+        results_songs = Songs.objects.all()[:12]
+        results_profiles = UserProfile.objects.all()[:12]
+        results_blogs = Blogs.objects.all()[:12]
         context_dict = {'results_songs': results_songs, 'results_profiles': results_profiles,'results_blogs': results_blogs}
         if request.user.is_authenticated:
             login_user = get_object_or_404(UserProfile, user=request.user)
