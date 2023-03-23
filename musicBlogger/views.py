@@ -39,6 +39,7 @@ def visitor_cookie_handler(request):
 def index(request):
     context_dict = {}
     newest_blogs = Blogs.objects.order_by('-date')[:4]
+    print(newest_blogs)
     context_dict['newest_blogs'] = newest_blogs
     return render(request, 'musicBlogger/index.html', context=context_dict)
 
@@ -73,19 +74,19 @@ def user_login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)  # Checks if valid password.
+        context_dict = {}
 
         if user:
             if user.is_active:
                 login(request, user)
                 return redirect(reverse('musicBlogger:index'))
             else:
-                return HttpResponse("Your Music Blogger account is disabled.")
+                context_dict['error_message']="Your Music Blogger account is disabled."
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            context_dict['error_message']="Invalid login details supplied."
 
-    else:
-        return render(request, 'musicBlogger/login.html')
+    return render(request, 'musicBlogger/login.html',context=context_dict)
 
 
 @login_required
@@ -264,6 +265,23 @@ def follow(request, username):
         return JsonResponse(response_data)
 
     
+@login_required
+def add_comment(request, slug):
+    blog = Blogs.objects.get(slug=slug)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.commentedBy = UserProfile.objects.get(user = request.user)
+            comment.blog = blog
+            comment.save()
+            blog_result = get_object_or_404(Blogs, slug=slug)
+            comments = Comments.objects.filter(blog=blog_result)
+            context_dict = {'blog':blog_result, 'comments':comments}
+            return render(request, 'musicBlogger/viewBlog.html', context=context_dict)
+    else:
+        form = CommentForm(initial={'blogname': blog.title, 'user': request.user.username})
+    return render(request, 'musicBlogger/add_comment.html', {'form': form,"blogname":blog.title})
 
 
 
