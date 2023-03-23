@@ -17,7 +17,11 @@ Login
             </form>
             <div class="signin-text-container">
                 <h5 class="small-text">Don’t have an  account yet?</h5>
-                <a class="link-style" href="{% url 'musicBlogger:new_account' %}">Sign up</a>
+                <a class="link-style" href="{% url 'musicBlogger:new_account' %}">Sign up</a> <br />
+                {% if error_message %}
+                <h5 class='small-text'>Error(s):</h5>
+                <h5 class='small-text'>{{ error_message }}</h5>
+                {% endif %}
             </div>
         </div>
     </div>

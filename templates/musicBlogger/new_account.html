@@ -27,6 +27,7 @@ New account
                     <h5 class="small-text">Have had an account already?</h5>
                     <a class="link-style" href="{% url 'musicBlogger:login' %}">Login</a>
                     {% if error_message %}
+                    <h5 class='small-text'>Error(s):</h5><br />
                     <h5 class="small-text">{{error_message}}</h5>
                     {% endif %}
                 </div>

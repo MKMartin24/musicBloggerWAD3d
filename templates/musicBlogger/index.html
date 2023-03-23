@@ -12,25 +12,17 @@
         <div class="profile-container">
             <h5 class='about-text'>Welcome {{ user.username }}!</h5><br />
             <h5 class='about-text'>Here are the most recently posted blogs</h5><br />
-            {% if newestBlogs %}
-            {% for blog in newest_blogs %}
-            <a href="{% url 'musicBlogger:blog' blog.title %}" ><div class="profile-items">
-                <div class="profile-info">
-                    <div class="profile-title">
-                        img_message ={{ blog.title }}+" picture"
-                        <img class="logo-img" src="{{ blog.image.url }}" alt=img_message>
-                        <div class="profile-text">
-                            <h2 class="name-text">{{ blog.title }}</h2>
-                            <h3 class="location-text">{{ blog.date }}</h3>
-                        </div>
-                    </div>
+            {% for result in newest_blogs %}
+                <div class="blogs">
+                    <h3><a href="{% url 'musicBlogger:blog' slug=result.slug %}">{{ result.title }}</a></h3>
+                    {% if result.image %}
+                        <a href="{% url 'musicBlogger:blog' slug=result.slug %}"><img src="{{ result.image.url }}"></a>
+                    {% endif %}
+                    <p>{{ result.text }}</p>
                 </div>
-            </div>
-            </a>
+            {% empty %}
+                    Sorry, no blogs are currently available
             {% endfor %}
-            {% else %}
-            <h5 class='about-text'>Sorry, there are no blogs avaliable currently</h5>
-            {% endif %}
         </div>
     </main>
 {% endblock %}
