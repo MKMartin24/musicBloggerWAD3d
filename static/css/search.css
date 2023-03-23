@@ -54,6 +54,10 @@
     color: black;
     font-weight: bold;
     font-size: 1.2em;
+    text-decoration: none;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
   }
   button {
     background-color: lightblue;

@@ -31,7 +31,6 @@
                     {% if result.image %}
                         <a href="{% url 'musicBlogger:profile' username=result.user %}"><img src="{{ result.image.url }}"></a>
                     {% endif %}
-                    <p>{{ result.text }}</p>
                 </div>
                 {% empty %}
                     No results found.
@@ -48,7 +47,6 @@
                         {% if result.image %}
                             <a href="{% url 'musicBlogger:blog' slug=result.slug %}"><img src="{{ result.image.url }}"></a>
                         {% endif %}
-                        <p>{{ result.text }}</p>
                     </div>
                 {% empty %}
                     No results found.

@@ -187,7 +187,7 @@
 }
 
 
-.track-container img, follow-container {
+.track-container img {
     width: 100%;
     height: auto;
     object-fit: cover;
@@ -195,7 +195,7 @@
     max-height: 100%;
   }
 
-.track-list,.follow-list {
+.track-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
