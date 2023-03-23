@@ -1,4 +1,6 @@
 # musicBloggerWAD3d
+![musicBloggerLogo](https://user-images.githubusercontent.com/98586963/227234344-68c0093a-5513-4f3c-b4e9-20a98448494e.png)
+
 
 ## Team Members(Lab group 3 Team D):
 -	Hoi Chiu 2679319C
