@@ -8,7 +8,6 @@
                     {% if result.image %}
                     <a href="{{ result.youtubeURL }}"><img src="{{ result.image.url }}"></a>
                     {% endif %}
-                    <p>{{ result.text }}</p>
                     {% if user.is_authenticated %}
                         {% if result in likedSongs %}
                             <button onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Liked</button>
