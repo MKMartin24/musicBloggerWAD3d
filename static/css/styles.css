@@ -12,11 +12,11 @@ body{
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 500;
-    font-size: 32px; 
+    font-size: 28px;
     line-height: 24px;
     text-transform: capitalize;
-    margin-left: 5%;
-    }
+    margin-left: 30px;
+}
     
     @media (max-width: 250px) {
     .header-link {
@@ -52,7 +52,7 @@ body{
 
 
 .header-link:hover{
-    font-size: 22px;
+    font-size: 26px;
 }
 
 .links{

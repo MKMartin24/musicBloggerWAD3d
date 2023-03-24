@@ -16,8 +16,9 @@ urlpatterns = [
     path('logout/',views.user_logout, name="logout"),
     path('write_blog/',views.write_blog,name='write_blog'),
     path('profile/<username>/', views.profile, name='profile'),
-    path('profile/<username>/follow', views.follow, name='follow'),
-    path('blog/<slug:slug>/add_comment', views.add_comment, name='add_comment'),
+    path('profile/<username>/follow/', views.follow, name='follow'),
     path('blog/<slug:slug>/', views.view_blog, name='blog'),
-    path('like', views.like, name='like'),
+    path('blog/<slug:slug>/add_comment/', views.add_comment, name='add_comment'),
+    path('like/', views.like, name='like'),
+
 ]
