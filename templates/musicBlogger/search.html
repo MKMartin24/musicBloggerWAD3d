@@ -17,58 +17,6 @@
     <h1>Search</h1>
     <input type="text" id="search-input" placeholder="Search...">
     <button onclick="search()">Search</button>
-    <div id="results">
-        <div id="results_songs">
-            <h2>Song Results</h2>
-            {% for result in results_songs %}
-                <div class="song">
-                    <h3><a href="{{ result.youtubeURL }}">{{ result.name }}</a></h3>
-                    {% if result.image %}
-                    <a href="{{ result.youtubeURL }}"><img src="{{ result.image.url }}"></a>
-                    {% endif %}
-                    {% if user.is_authenticated %}
-                        {% if result in likedSongs %}
-                            <button onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Liked</button>
-                        {% else %}
-                            <button onclick="like('{{ user.username }}', '{{ result.id }}')", id="like-{{ result.id }}">Like</button>
-                        {% endif %}
-                    {% endif %}
-                </div>
-            {% empty %}
-                No results found.
-            {% endfor %}
-          </div>
-    
-        
-            <div id="results_profiles">
-                <h2>Profile Results</h2>
-                {% for result in results_profiles %}
-                <div class="profile">
-                    <h3><a href="{% url 'musicBlogger:profile' username=result.user %}">{{ result.user }}</a></h3>
-                    {% if result.image %}
-                        <a href="{% url 'musicBlogger:profile' username=result.user %}"><img src="{{ result.image.url }}"></a>
-                    {% endif %}
-                </div>
-                {% empty %}
-                    No results found.
-                {% endfor %}
-    
-        </div>
-        
-            
-            <div id="results_blogs">
-                <h2>Blogs Results</h2>
-                {% for result in results_blogs %}
-                    <div class="blogs">
-                        <h3><a href="{% url 'musicBlogger:blog' slug=result.slug %}">{{ result.title }}</a></h3>
-                        {% if result.image %}
-                            <a href="{% url 'musicBlogger:blog' slug=result.slug %}"><img src="{{ result.image.url }}"></a>
-                        {% endif %}
-                    </div>
-                {% empty %}
-                    No results found.
-                {% endfor %}
-            </div>
-    
-  </div>
+    {% include 'musicBlogger/search_results.html' %}
+
 {% endblock %}
