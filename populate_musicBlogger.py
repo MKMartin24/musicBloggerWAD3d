@@ -131,28 +131,8 @@ def add_user_profile(user, text, image_name):
     u.save()
     return u
 
-
-def add_user(user_name, password, email):
-    u = User.objects.get_or_create(username=user_name, email=email)[0]
-    u.set_password(password)
-    u.save()
-    return u
-
-
-def add_blog(title, image_name, text, postBy):
-    b = Blogs.objects.get_or_create(title=title, image='/blog_images/'+image_name, text=text, postedBy=postBy)[0]
-    b.save()
-    return b
-
-
-def add_song(name, text, spotifyURL, youtubeURL, description, image, genre, madeBy):
-    s = Songs.objects.get_or_create(name=name, text=text, spotifyURL=spotifyURL, youtubeURL=youtubeURL,
-                                    description=description, image="/cover_images/"+image, genre=genre, madeBy=madeBy)[0]
-    s.save()
-    return s
-
-def add_comment(content, blog, commentedBy):
-    com = Comments.objects.get_or_create(content = content, blog=blog, commentedBy=commentedBy)[0]
+def add_blogs_comments(post, content, user):
+    com = Comments.objects.get_or_create(post=post, content=content, user=user)[0]
     com.save()
     return com
 
@@ -160,6 +140,18 @@ def add_artist(artistName):
     a = Artist.objects.get_or_create(artistName=artistName)[0]
     a.save()
     return a
+
+
+def add_user(user_id, user_name, superuser, email, first_name, last_name):
+    u = User.objects.get_or_create(id=user_id, username=user_name, is_superuser=superuser, email=email,
+                                   first_name=first_name, last_name=last_name)
+    return u
+
+def add_blog(name):
+    Blogs = Blogs.objects.get_or_create(name=name)[0]
+    Blogs.save()
+    return Blogs
+
 
 # Start excution here
 if __name__ == '__main__':
